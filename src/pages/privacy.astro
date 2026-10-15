@@ -12,6 +12,7 @@ const updated = '15 October 2026';
     <ul>
       <li>This site has no user accounts of its own and never asks for or stores passwords.</li>
       <li>It is a static website hosted on Cloudflare.</li>
+      <li>Visitor numbers are counted with Cloudflare Web Analytics, which uses no cookies and doesn't follow you across other websites.</li>
       <li>Ads, if shown, are served by Google AdSense, which may use cookies. You will be asked for consent first where the law requires it.</li>
       <li>Comments are handled by Giscus and stored on GitHub, and you need a GitHub account to comment.</li>
       <li>Guest authors sign in with GitHub to write; their posts and profiles are public.</li>
@@ -21,12 +22,15 @@ const updated = '15 October 2026';
     <ul>
       <li><strong>This site sets no cookies</strong> when you read posts or use the tools.</li>
       <li><strong>Light/dark mode:</strong> if you click the ◐ button, your choice is saved in your browser's local storage (key <code>theme</code>) so it's remembered next time. It never leaves your device. You can clear it with your browser's site data.</li>
-      <li><strong>Guest editor login:</strong> signing in at <code>/admin/</code> sets one short-lived, strictly necessary cookie (<code>decap_oauth_state</code>, 10 minutes, only on <code>/api/</code>) to protect the GitHub login against forgery.</li>
+      <li><strong>Editor login:</strong> the editor at <code>/admin/</code> is only for the people who run this site. Signing in there sets strictly necessary cookies: <code>CF_Authorization</code> from Cloudflare Access (proves you are allowed in) and <code>decap_oauth_state</code> (10 minutes, only on <code>/api/</code>, protects the GitHub login against forgery). Readers never get these.</li>
       <li><strong>Advertising:</strong> Google AdSense may set cookies, but only after you consent where the law requires it (see section 2).</li>
     </ul>
 
     <h2>1. Hosting and server logs</h2>
     <p>This site is delivered by Cloudflare, Inc. When you load a page, Cloudflare processes technical data such as your IP address, browser type and the requested URL in order to deliver the page and protect it against abuse. This is based on legitimate interest (Art. 6(1)(f) GDPR) in operating a secure website. See <a href="https://www.cloudflare.com/privacypolicy/" rel="noopener">Cloudflare's privacy policy</a>.</p>
+
+    <h3>Visitor statistics</h3>
+    <p>To see which pages are read, this site uses <a href="https://www.cloudflare.com/web-analytics/" rel="noopener">Cloudflare Web Analytics</a>. A small script from <code>static.cloudflareinsights.com</code> reports page views and page load times to Cloudflare. It sets <strong>no cookies</strong>, uses no local storage and does not create a profile of you or follow you across websites. I only see totals, such as page views per page, referring sites, countries, browsers and device types. This is based on legitimate interest (Art. 6(1)(f) GDPR) in understanding which content is useful and keeping the site fast. Blocking the script (for example with an ad blocker) has no effect on how the site works.</p>
 
     <h2>2. Advertising (Google AdSense)</h2>
     <p>This site may show ads served by Google Ireland Ltd. / Google LLC ("Google") through Google AdSense. Third-party vendors, including Google, use cookies to serve ads based on your prior visits to this and other websites. Google's use of advertising cookies enables it and its partners to serve ads based on your visits to this site and/or other sites on the internet.</p>
@@ -52,6 +56,6 @@ const updated = '15 October 2026';
     <p>Under the GDPR you have the right to access, rectify and erase your data, to restrict or object to processing, to data portability, and to withdraw consent at any time. Contact me at the address above. You also have the right to lodge a complaint with a data protection supervisory authority, in particular in the EU country where you live or work (see the <a href="https://www.edpb.europa.eu/about-edpb/about-edpb/members_en" rel="noopener">list of EU data protection authorities</a>).</p>
 
     <h2>9. Changes</h2>
-    <p>I'll update this page when the site changes (for example if analytics are added). The date at the top shows the latest version.</p>
+    <p>I'll update this page when the site changes. The date at the top shows the latest version.</p>
   </div>
 </Base>

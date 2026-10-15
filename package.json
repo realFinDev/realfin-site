@@ -7,7 +7,7 @@
     "dev": "astro dev --host",
     "build": "astro build && pagefind --site dist",
     "preview": "astro preview --host",
-    "test": "node --test tests/*.test.cjs"
+    "test": "node --test tests/*.test.cjs tests/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
