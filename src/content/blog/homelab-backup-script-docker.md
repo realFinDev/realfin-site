@@ -10,6 +10,8 @@ Losing a movie library is annoying. Losing ten Home Assistant automations, every
 
 ## The trick: let a container do the archiving
 
+[![Cron starts the script at 03:30; a throwaway Alpine container reads the app folders read-only, archives each app without caches or logs, writes to the backup disk and keeps the newest seven; an off-site copy is the next step](/images/posts/backup-flow.svg)](/images/posts/backup-flow.svg)
+
 Many app folders are owned by **root**, because containers wrote them. My user can't read them without `sudo`, and I don't want a password-less sudo rule just for backups. So the script runs the archiving inside a temporary Alpine container, which runs as root *inside* and only sees the folders I mount:
 
 ```bash

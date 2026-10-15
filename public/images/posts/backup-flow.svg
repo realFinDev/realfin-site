@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 260" font-family="DejaVu Sans, Verdana, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">Nightly homelab backup flow</title>
+  <desc id="d">At 03:30 cron starts the backup script. It runs a temporary Alpine container that mounts the app folders read-only, archives each app's config without caches or logs, writes the archives to the second disk and keeps the newest seven of each.</desc>
+  <rect width="760" height="260" rx="14" fill="#ffffff"/>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#0b6e4f"/></marker>
+  </defs>
+  <g text-anchor="middle">
+    <rect x="18" y="90" width="110" height="66" rx="10" fill="#f3f1ec" stroke="#cfc9bd"/>
+    <text x="73" y="118" font-size="13" font-weight="bold" fill="#1d1d1f">cron 03:30</text>
+    <text x="73" y="138" font-size="11" fill="#5f6368">backup-all.sh</text>
+
+    <rect x="170" y="34" width="170" height="60" rx="10" fill="#f3f1ec" stroke="#cfc9bd"/>
+    <text x="255" y="60" font-size="13" font-weight="bold" fill="#1d1d1f">App folders (NVMe)</text>
+    <text x="255" y="78" font-size="11" fill="#5f6368">mounted read-only</text>
+
+    <rect x="170" y="140" width="170" height="80" rx="10" fill="#e3f2ec" stroke="#0b6e4f"/>
+    <text x="255" y="166" font-size="13" font-weight="bold" fill="#1d1d1f">Throwaway Alpine</text>
+    <text x="255" y="184" font-size="11" fill="#5f6368">tar per app, skips</text>
+    <text x="255" y="200" font-size="11" fill="#5f6368">cache, logs, posters</text>
+
+    <rect x="390" y="140" width="170" height="80" rx="10" fill="#e3f2ec" stroke="#0b6e4f"/>
+    <text x="475" y="166" font-size="13" font-weight="bold" fill="#1d1d1f">Backups (HDD)</text>
+    <text x="475" y="184" font-size="11" fill="#5f6368">one .tar.gz per app</text>
+    <text x="475" y="200" font-size="11" fill="#5f6368">keep newest 7 each</text>
+
+    <rect x="602" y="140" width="140" height="80" rx="10" fill="#fff7e0" stroke="#c99a00" stroke-dasharray="5 4"/>
+    <text x="672" y="166" font-size="13" font-weight="bold" fill="#1d1d1f">Off-site copy</text>
+    <text x="672" y="184" font-size="11" fill="#5f6368">next step: the small,</text>
+    <text x="672" y="200" font-size="11" fill="#5f6368">critical archives</text>
+  </g>
+  <g stroke="#0b6e4f" stroke-width="2.2" fill="none">
+    <path d="M128 123 C 150 140, 155 165, 166 172" marker-end="url(#a)"/>
+    <path d="M255 94 V136" marker-end="url(#a)"/>
+    <path d="M340 180 H386" marker-end="url(#a)"/>
+    <path d="M560 180 H598" stroke="#c99a00" stroke-dasharray="5 4" marker-end="url(#a)"/>
+  </g>
+  <g font-size="11" fill="#5f6368" text-anchor="middle">
+    <text x="276" y="120" text-anchor="start">read</text>
+    <text x="363" y="172">write</text>
+    <text x="380" y="248">No sudo needed: the container runs as root inside, but only sees what's mounted.</text>
+  </g>
+</svg>
