@@ -46,13 +46,14 @@ const startHere = ['homelab-tour-30-containers', 'homelab-security-no-port-forwa
   <section>
     <h2>Free tools</h2>
     <div class="cats">
-      {TOOLS.map((t) => (
+      {TOOLS.filter((t) => ['/tools/valheim-server-modifiers/', '/tools/dns-checker/', '/tools/roblox-remote-validator/'].includes(t.href)).map((t) => (
         <a class="card" href={t.href} style="text-decoration:none">
           <h3 style="margin-top:0;color:var(--text)">{t.title}</h3>
           <p>{t.short}</p>
         </a>
       ))}
     </div>
+    <p><a href="/tools/">All {TOOLS.length} tools →</a></p>
   </section>
 
   <h2>Latest posts</h2>
