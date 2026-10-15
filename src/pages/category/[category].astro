@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PostCard from '../../components/PostCard.astro';
-import { CATEGORIES, type Category } from '../../consts';
+import { CATEGORIES, SERIES, type Category } from '../../consts';
 import { getPosts } from '../../lib';
 
 export function getStaticPaths() {
@@ -10,10 +10,15 @@ export function getStaticPaths() {
 const category = Astro.params.category as Category;
 const c = CATEGORIES[category];
 const posts = (await getPosts()).filter((p) => p.data.category === category);
+// Series whose posts are mostly in this category.
+const series = Object.values(SERIES).filter((s) => s.posts.filter((id) => posts.some((p) => p.id === id)).length > s.posts.length / 2);
 ---
 <Base title={c.label} description={c.blurb} noindex={posts.length === 0}>
   <h1>{c.label}</h1>
   <p class="lede">{c.blurb}</p>
+  {series.length > 0 && (
+    <p>Read in order: {series.map((s, i) => <>{i > 0 && ' · '}<a href={`/blog/${s.posts[0]}/`}>{s.title}</a></>)}</p>
+  )}
   {posts.length > 0
     ? <ul class="cards">{posts.map((post) => <PostCard post={post} />)}</ul>
     : <p>First posts are on the way.</p>}

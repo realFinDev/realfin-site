@@ -11,6 +11,14 @@ const startHere = ['homelab-tour-30-containers', 'homelab-security-no-port-forwa
   .filter((p) => p !== undefined);
 ---
 <Base>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'RealFin',
+    url: 'https://realfin.dev/',
+    description: 'Homelab, self-hosting and game servers, written up from a real server. Plus building a Roblox game with AI.',
+    publisher: { '@type': 'Person', name: 'RealFin', url: 'https://realfin.dev/authors/realfin/' },
+  })} />
   <h1>A real homelab, written down.</h1>
   <p class="lede">
     One home server, about thirty Docker containers: media, smart home, DNS, a local AI and game servers for friends.

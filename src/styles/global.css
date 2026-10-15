@@ -140,3 +140,4 @@ button.copy, button.action { font: inherit; font-size: 0.9rem; background: var(-
   main.wrap { padding-top: 24px; }
 }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 18px; } .chips .pill { padding: 3px 12px; font-size: 0.85rem; }

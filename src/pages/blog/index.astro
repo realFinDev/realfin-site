@@ -2,11 +2,17 @@
 import Base from '../../layouts/Base.astro';
 import PostCard from '../../components/PostCard.astro';
 import { getPosts } from '../../lib';
+import { CATEGORIES } from '../../consts';
 const posts = await getPosts();
+const cats = Object.entries(CATEGORIES).filter(([k]) => posts.some((p) => p.data.category === k));
 ---
 <Base title="Blog" description="Every post: homelab guides, game server write-ups and Roblox dev notes.">
   <h1>Blog</h1>
   <p class="lede">{posts.length} posts about homelab, game servers and Roblox development.</p>
+  <nav class="chips" aria-label="Categories">
+    {cats.map(([k, c]) => <a class="pill" href={`/category/${k}/`}>{c.label} ({posts.filter((p) => p.data.category === k).length})</a>)}
+    <a class="pill" href="/search/">Search…</a>
+  </nav>
   <ul class="cards">
     {posts.map((post) => <PostCard post={post} />)}
   </ul>
