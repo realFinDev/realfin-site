@@ -1,0 +1,88 @@
+# Decap CMS config: https://decapcms.org/docs/configuration-options/
+backend:
+  name: github
+  repo: realFinDev/realfin-site
+  branch: main
+  base_url: https://realfin.dev
+  auth_endpoint: api/auth
+  # Contributors without write access write in their own fork; submissions become pull requests the editor reviews.
+  open_authoring: true
+  # Only ask contributors for access to public repos, never their private ones.
+  auth_scope: public_repo
+  commit_messages:
+    create: 'New post: "{{slug}}"'
+    update: 'Update "{{slug}}"'
+    delete: 'Delete "{{slug}}"'
+    uploadMedia: 'Upload "{{path}}"'
+    deleteMedia: 'Delete "{{path}}"'
+    openAuthoring: '{{message}} (by {{author-login}})'
+
+publish_mode: editorial_workflow
+site_url: https://realfin.dev
+display_url: https://realfin.dev
+logo_url: https://realfin.dev/favicon.svg
+media_folder: public/images/posts
+public_folder: /images/posts
+
+collections:
+  - name: blog
+    label: Posts
+    label_singular: Post
+    description: 'Read the writing guide first: https://realfin.dev/write/'
+    folder: src/content/blog
+    create: true
+    slug: '{{slug}}'
+    extension: md
+    format: frontmatter
+    summary: '{{title}} ({{author}})'
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: 'Short summary (shown in lists and on Google, 1–2 sentences)', name: description, widget: text }
+      - { label: Publish date, name: pubDate, widget: datetime, format: 'YYYY-MM-DDTHH:mm:ss', date_format: 'YYYY-MM-DD', time_format: 'HH:mm' }
+      - label: Category
+        name: category
+        widget: select
+        options:
+          - { label: Homelab, value: homelab }
+          - { label: Game servers, value: game-servers }
+          - { label: Roblox dev, value: roblox }
+      - { label: Tags, name: tags, widget: list, required: false, hint: 'A few lowercase keywords, e.g. docker, valheim' }
+      - label: Author (your profile)
+        name: author
+        widget: relation
+        collection: authors
+        value_field: '{{slug}}'
+        search_fields: [name]
+        display_fields: [name]
+        hint: 'Create your author profile first under "Authors" if it is not in the list.'
+      - label: Show ads on this post
+        name: ads
+        widget: boolean
+        default: true
+        hint: 'Your choice. Off = no ads at all on this post.'
+      - { label: Draft, name: draft, widget: hidden, default: false }
+      - { label: Post, name: body, widget: markdown }
+
+  - name: authors
+    label: Authors
+    label_singular: Author profile
+    folder: src/content/authors
+    create: true
+    slug: '{{fields.handle}}'
+    extension: json
+    format: json
+    identifier_field: name
+    fields:
+      - { label: 'Handle (lowercase, no spaces, e.g. "pixelpete"), becomes your profile URL', name: handle, widget: string, pattern: ['^[a-z0-9-]{3,30}$', 'Lowercase letters, numbers and dashes, 3–30 characters'] }
+      - { label: 'Display name (a nickname is fine, no real name needed)', name: name, widget: string }
+      - { label: 'Short bio (1–2 sentences)', name: bio, widget: text }
+      - { label: 'Avatar (optional, square image)', name: avatar, widget: image, required: false }
+      - { label: Role, name: role, widget: hidden, default: contributor }
+      - label: Links (optional)
+        name: links
+        widget: object
+        required: false
+        fields:
+          - { label: Website, name: website, widget: string, required: false }
+          - { label: GitHub username, name: github, widget: string, required: false }
+      - { label: Joined, name: joined, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false }

@@ -4,6 +4,7 @@ import { glob } from 'astro/loaders';
 const authors = defineCollection({
   loader: glob({ base: './src/content/authors', pattern: '**/*.json' }),
   schema: z.object({
+    handle: z.string().optional(), // written by the CMS; the file name is the real id
     name: z.string(),
     bio: z.string(),
     avatar: z.string().optional(), // path under /public, e.g. /images/authors/realfin.svg
