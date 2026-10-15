@@ -39,6 +39,8 @@ function rehypeTableScope() {
 
 export default defineConfig({
   site: 'https://realfin.dev',
+  // Load pages in the background when a visitor hovers or taps a link, so navigation feels instant.
+  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
   integrations: [
     sitemap({
       filter: (page) => !page.includes('/admin/') && !isEmptyCategory(page),
