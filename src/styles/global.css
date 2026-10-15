@@ -61,7 +61,7 @@ header.site .wrap { display: flex; flex-wrap: wrap; align-items: center; justify
 nav.main { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 0.95rem; }
 nav.main a { color: var(--muted); text-decoration: none; }
 nav.main a:hover, nav.main a[aria-current="page"] { color: var(--text); }
-main { padding: 32px 0 56px; }
+main.wrap { padding-top: 36px; padding-bottom: 56px; }
 h1, h2, h3 { line-height: 1.25; letter-spacing: -0.015em; }
 h1 { font-size: clamp(1.8rem, 5vw, 2.4rem); margin: 0 0 12px; }
 h2 { font-size: 1.45rem; margin-top: 2.2em; }
@@ -96,7 +96,7 @@ footer.site a { color: var(--muted); }
 .author-card h3 { margin-top: 0; }
 .toc { margin: 18px 0 8px; padding: 10px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; font-size: 0.95rem; }
 .toc summary { cursor: pointer; font-weight: 650; }
-.toc ol { margin: 8px 0 2px; padding-left: 22px; }
+.toc ul { margin: 8px 0 2px; padding-left: 20px; }
 .toc li { margin: 2px 0; }
 .prose h2, .prose h3 { scroll-margin-top: 16px; }
 .tool fieldset { border: 1px solid var(--border); border-radius: 10px; background: var(--surface); padding: 12px 16px 14px; margin: 0 0 14px; }
@@ -131,4 +131,11 @@ button.copy, button.action { font: inherit; font-size: 0.9rem; background: var(-
   .prose a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #444; }
   .prose pre { white-space: pre-wrap; border: 1px solid #999; background: #f5f5f5; }
   main { padding: 0; }
+}
+@media (max-width: 640px) {
+  header.site .wrap { padding-top: 10px; padding-bottom: 0; }
+  nav.main { flex-wrap: nowrap; overflow-x: auto; gap: 16px; width: 100%; padding: 4px 0 10px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  nav.main::-webkit-scrollbar { display: none; }
+  nav.main a, nav.main button { flex: none; }
+  main.wrap { padding-top: 24px; }
 }

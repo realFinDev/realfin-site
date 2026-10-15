@@ -7,9 +7,9 @@ const items = Astro.props.headings.filter((h) => h.depth === 2);
   <nav class="toc" aria-label="On this page" data-pagefind-ignore>
     <details open>
       <summary>On this page</summary>
-      <ol>
+      <ul>
         {items.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
-      </ol>
+      </ul>
     </details>
   </nav>
 )}
