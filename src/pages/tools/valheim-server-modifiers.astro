@@ -55,6 +55,7 @@ const pretty: Record<string, string> = {
         <label class="check"><input type="checkbox" name="setkey" value={k.key} /> {k.label}</label>
       ))}
     </fieldset>
+    <button type="submit" class="action">Generate</button>
   </form>
 
   <h2>Server arguments</h2>
@@ -94,6 +95,7 @@ const pretty: Record<string, string> = {
         document.getElementById('env').textContent = args ? '- SERVER_ARGS=' + args : '# defaults: no SERVER_ARGS needed';
       }
       form.addEventListener('change', update);
+      form.addEventListener('submit', function (e) { e.preventDefault(); update(); });
       document.querySelectorAll('.copy').forEach(function (b) {
         b.addEventListener('click', function () {
           var t = document.getElementById(b.dataset.target).textContent;

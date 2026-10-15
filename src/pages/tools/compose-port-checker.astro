@@ -26,11 +26,11 @@ services:
     <p class="meta">Runs entirely in your browser. Nothing you paste is uploaded or stored.</p>
   </div>
 
-  <form class="tool" id="pc" onsubmit="return false">
+  <form class="tool" id="pc">
     <fieldset>
       <legend>Compose files (separate several files with a line containing only <code>---</code>)</legend>
       <textarea id="input" spellcheck="false" aria-label="docker-compose content">{example}</textarea>
-      <p style="margin:10px 0 0"><button type="button" class="action" id="run">Check ports</button></p>
+      <p style="margin:10px 0 0"><button type="submit" class="action" id="run">Check ports</button></p>
     </fieldset>
   </form>
 
@@ -71,11 +71,11 @@ services:
           var rows = r.ports.slice().sort(function (a, b) { return a.from - b.from; }).map(function (p) {
             return '<tr><td>' + portText(p) + '/' + esc(p.proto) + '</td><td>' + esc(p.service) + '</td><td>' + p.file + '</td><td>' + (p.ip ? esc(p.ip) : '(all)') + '</td><td>' + label[pc.exposure(p.ip)] + '</td></tr>';
           }).join('');
-          h += '<table class="result-table"><thead><tr><th>Host port</th><th>Service</th><th>File</th><th>Bound to</th><th>Reachable from</th></tr></thead><tbody>' + rows + '</tbody></table>';
+          h += '<table class="result-table"><thead><tr><th scope="col">Host port</th><th scope="col">Service</th><th scope="col">File</th><th scope="col">Bound to</th><th scope="col">Reachable from</th></tr></thead><tbody>' + rows + '</tbody></table>';
         } else h += '<p>No published ports found. Did you paste a file with a <code>services:</code> section?</p>';
         document.getElementById('results').innerHTML = h;
       }
-      document.getElementById('run').addEventListener('click', run);
+      document.getElementById('pc').addEventListener('submit', function (e) { e.preventDefault(); run(); });
       run();
     })();
   </script>
