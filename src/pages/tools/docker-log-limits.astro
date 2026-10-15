@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import ToolSchema from '../../components/ToolSchema.astro';
 const example = `{
     "runtimes": {
         "nvidia": {
@@ -11,6 +12,7 @@ const example = `{
 }`;
 ---
 <Base image="/og/tool-docker-log-limits.png" title="Docker log size limit helper" description="Cap Docker's container logs: paste your daemon.json, choose max-size and max-file, and get the merged config plus the worst-case disk usage.">
+  <ToolSchema />
   <div class="prose" data-pagefind-body>
     <h1>Docker log size limit helper</h1>
     <p class="lede">Docker keeps container logs forever by default. Paste your current <code>/etc/docker/daemon.json</code>, pick a limit, and get the merged file back, with everything you already had kept intact.</p>

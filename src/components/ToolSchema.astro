@@ -1,0 +1,18 @@
+---
+import { TOOLS } from '../tools';
+// schema.org WebApplication for the tool page at the current URL.
+const tool = TOOLS.find((t) => t.href === Astro.url.pathname);
+const data = tool && {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: tool.title,
+  description: tool.text,
+  url: new URL(tool.href, Astro.site).href,
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'Any (runs in the browser)',
+  isAccessibleForFree: true,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+  author: { '@type': 'Person', name: 'RealFin', url: new URL('/authors/realfin/', Astro.site).href },
+};
+---
+{data && <script type="application/ld+json" set:html={JSON.stringify(data)} />}

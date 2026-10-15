@@ -1,10 +1,12 @@
 ---
 import Base from '../../layouts/Base.astro';
+import ToolSchema from '../../components/ToolSchema.astro';
 const example = `Alice 76561198000000001
 https://steamcommunity.com/profiles/76561198000000002
 Bob - 76561198000000003`;
 ---
 <Base image="/og/tool-valheim-whitelist.png" title="Valheim whitelist builder" description="Paste Steam profile links, SteamID64s or Valheim server log lines and get a clean, commented permittedlist.txt or adminlist.txt for your dedicated server.">
+  <ToolSchema />
   <div class="prose" data-pagefind-body>
     <h1>Valheim whitelist builder</h1>
     <p class="lede">Turn a messy list of Steam profile links, IDs or server log lines into a clean <code>permittedlist.txt</code> (whitelist) or <code>adminlist.txt</code>, with names as comments so you remember who's who.</p>

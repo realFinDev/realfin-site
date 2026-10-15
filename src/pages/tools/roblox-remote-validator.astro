@@ -1,7 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
+import ToolSchema from '../../components/ToolSchema.astro';
 ---
 <Base image="/og/tool-roblox-remote-validator.png" title="Roblox RemoteEvent validator generator" description="Describe what a RemoteEvent receives and get server-side Luau that type-checks, range-checks and rate-limits every argument, so exploiters can't send whatever they want.">
+  <ToolSchema />
   <div class="prose" data-pagefind-body>
     <h1>Roblox RemoteEvent validator generator</h1>
     <p class="lede">Exploiters can fire any RemoteEvent with <strong>any arguments</strong>. Describe what your remote should receive, and get the server-side Luau that rejects everything else: wrong types, out-of-range numbers, NaN, huge strings, fake objects and spam.</p>
