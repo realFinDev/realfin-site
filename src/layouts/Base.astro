@@ -12,8 +12,10 @@ interface Props {
   author?: string;
   /** social preview image path under /public */
   image?: string;
+  /** keep this page out of search engines (e.g. empty listings) */
+  noindex?: boolean;
 }
-const { title, description = SITE_DESCRIPTION, type = 'website', ads = true, author, image = '/og/default.png' } = Astro.props;
+const { title, description = SITE_DESCRIPTION, type = 'website', ads = true, author, image = '/og/default.png', noindex = false } = Astro.props;
 const imageUrl = new URL(image, Astro.site);
 const loadAds = Boolean(ADSENSE_CLIENT) && ads && IS_PRODUCTION;
 const fullTitle = title ? `${title} · ${SITE_TITLE}` : `${SITE_TITLE}: homelab, game servers & Roblox dev`;
@@ -37,7 +39,7 @@ const nav = [
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {!IS_PRODUCTION && <meta name="robots" content="noindex, nofollow" />}
+    {(!IS_PRODUCTION || noindex) && <meta name="robots" content="noindex, follow" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate" type="application/rss+xml" title={SITE_TITLE} href="/rss.xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />

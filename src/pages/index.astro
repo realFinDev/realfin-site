@@ -5,6 +5,7 @@ import { CATEGORIES } from '../consts';
 import { getPosts } from '../lib';
 const posts = await getPosts();
 const latest = posts.slice(0, 6);
+const activeCats = Object.entries(CATEGORIES).filter(([key]) => posts.some((p) => p.data.category === key));
 const startHere = ['homelab-tour-30-containers', 'homelab-security-no-port-forwards', 'valheim-dedicated-server-docker']
   .map((id) => posts.find((p) => p.id === id))
   .filter((p) => p !== undefined);
@@ -17,7 +18,7 @@ const startHere = ['homelab-tour-30-containers', 'homelab-security-no-port-forwa
     <a href="/write/">Other people's first-hand stories are welcome too.</a>
   </p>
   <div class="cats">
-    {Object.entries(CATEGORIES).map(([key, c]) => (
+    {activeCats.map(([key, c]) => (
       <a class="card" href={`/category/${key}/`} style="text-decoration:none">
         <h3 style="margin-top:0;color:var(--text)">{c.label}</h3>
         <p>{c.blurb}</p>

@@ -1,6 +1,21 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import fs from 'node:fs';
+
+// Categories with no published posts are noindex and left out of the sitemap (empty listing pages look thin to Google).
+const BLOG = './src/content/blog';
+const usedCategories = new Set(
+  fs.readdirSync(BLOG).filter((f) => f.endsWith('.md'))
+    .map((f) => fs.readFileSync(`${BLOG}/${f}`, 'utf8'))
+    .filter((src) => !/^draft:\s*true/m.test(src))
+    .map((src) => src.match(/^category:\s*(\S+)/m)?.[1])
+    .filter(Boolean),
+);
+const isEmptyCategory = (/** @type {string} */ page) => {
+  const m = page.match(/\/category\/([^/]+)\/$/);
+  return Boolean(m && !usedCategories.has(m[1]));
+};
 
 // Accessibility: give Markdown table header cells scope="col" so screen readers associate them with their column.
 function rehypeTableScope() {
@@ -16,6 +31,6 @@ function rehypeTableScope() {
 
 export default defineConfig({
   site: 'https://realfin.dev',
-  integrations: [sitemap({ filter: (page) => !page.includes('/admin/') })],
+  integrations: [sitemap({ filter: (page) => !page.includes('/admin/') && !isEmptyCategory(page) })],
   markdown: { rehypePlugins: [rehypeTableScope] },
 });

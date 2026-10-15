@@ -11,7 +11,7 @@ const category = Astro.params.category as Category;
 const c = CATEGORIES[category];
 const posts = (await getPosts()).filter((p) => p.data.category === category);
 ---
-<Base title={c.label} description={c.blurb}>
+<Base title={c.label} description={c.blurb} noindex={posts.length === 0}>
   <h1>{c.label}</h1>
   <p class="lede">{c.blurb}</p>
   {posts.length > 0
