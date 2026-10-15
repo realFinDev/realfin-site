@@ -1,0 +1,79 @@
+---
+import Base from '../../layouts/Base.astro';
+const types = ['A', 'AAAA', 'CNAME', 'MX', 'TXT', 'NS', 'CAA'];
+---
+<Base title="DNS record checker" description="Check a domain's DNS records on Cloudflare and Google public DNS at once, with TTLs, and see how long a 'doesn't exist' answer stays cached.">
+  <div class="prose">
+    <h1>DNS record checker</h1>
+    <p class="lede">Look up a DNS record on <strong>Cloudflare</strong> and <strong>Google</strong> public DNS side by side. If a name doesn't exist (yet), it also tells you how long resolvers will remember that, which is why a brand-new subdomain can stay "not found" for a while.</p>
+    <p class="meta">Your browser asks cloudflare-dns.com and dns.google directly (DNS-over-HTTPS). Nothing goes through realfin.dev.</p>
+  </div>
+
+  <form class="tool" id="dns">
+    <fieldset>
+      <legend>Lookup</legend>
+      <label class="row"><span>Domain or hostname</span><input type="text" name="name" required placeholder="www.example.com" autocomplete="off" spellcheck="false" style="flex:1;min-width:220px" /></label>
+      <label class="row"><span>Record type</span>
+        <select name="type">{types.map((t) => <option value={t}>{t}</option>)}</select>
+      </label>
+      <button type="submit" class="action">Check</button>
+    </fieldset>
+  </form>
+
+  <div id="out" aria-live="polite"></div>
+
+  <div class="prose">
+    <h2>Reading the result</h2>
+    <ul>
+      <li><strong>NOERROR</strong> with records: the name exists and has that record type. The <strong>TTL</strong> is how long resolvers may cache it.</li>
+      <li><strong>NOERROR, no records</strong> ("no data"): the name exists, but not with this record type. Try A or CNAME.</li>
+      <li><strong>NXDOMAIN</strong>: the name doesn't exist. Resolvers may cache that answer for the <strong>negative TTL</strong> shown, so a record you create now may take that long to work for someone who already looked it up. <a href="/blog/dns-negative-caching-new-subdomain/">More on negative caching</a>.</li>
+      <li><strong>SERVFAIL</strong>: the resolver couldn't get an answer (broken DNSSEC, unreachable nameservers…).</li>
+      <li>Different IPs from the two resolvers are normal for big CDNs: they hand out nearby servers.</li>
+      <li>This shows <em>public</em> DNS. Your own network's resolver (Pi-hole, AdGuard, router) can have its own cached answer. Compare with <code>nslookup name</code> or <code>dig name</code> at home.</li>
+    </ul>
+  </div>
+
+  <script is:inline src="/tools/dns-checker.js"></script>
+  <script is:inline>
+    (function () {
+      var form = document.getElementById('dns'), out = document.getElementById('out');
+      var esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+      var D = window.DnsChecker;
+      var q = new URLSearchParams(location.search);
+      if (q.get('name')) form.elements.namedItem('name').value = q.get('name');
+      if (q.get('type')) form.elements.namedItem('type').value = q.get('type').toUpperCase();
+
+      async function lookup(resolver, name, type) {
+        try {
+          var res = await fetch(resolver.url(name, type), { headers: { accept: 'application/dns-json' } });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return D.summarize(await res.json());
+        } catch (e) { return { kind: 'error', status: 'request failed (' + e.message + ')', answers: [] }; }
+      }
+
+      function render(resolver, s) {
+        var h = '<h3>' + esc(resolver.name) + ': <span class="' + (s.kind === 'ok' ? 'ok' : 'warn') + '">' + esc(s.status) + (s.kind === 'nodata' ? ' (no records of this type)' : '') + '</span></h3>';
+        if (s.answers.length) {
+          h += '<table class="result-table"><thead><tr><th scope="col">Name</th><th scope="col">Type</th><th scope="col">TTL</th><th scope="col">Value</th></tr></thead><tbody>' +
+            s.answers.map(function (a) { return '<tr><td>' + esc(a.name) + '</td><td>' + esc(a.type) + '</td><td>' + esc(D.formatTtl(a.ttl)) + '</td><td><code>' + esc(a.data) + '</code></td></tr>'; }).join('') +
+            '</tbody></table>';
+        }
+        if (s.negativeTtl != null) h += '<p>Resolvers may cache this "' + (s.kind === 'nxdomain' ? 'doesn\'t exist' : 'no such record') + '" answer for up to <strong>' + esc(D.formatTtl(s.negativeTtl)) + '</strong> (zone <code>' + esc(s.soaZone) + '</code>).</p>';
+        return h;
+      }
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        var name = D.normalizeName(form.elements.namedItem('name').value);
+        var type = form.elements.namedItem('type').value;
+        if (!name) { out.innerHTML = '<p class="warn">That doesn\'t look like a valid domain name.</p>'; return; }
+        history.replaceState(null, '', '?name=' + encodeURIComponent(name) + '&type=' + type);
+        out.innerHTML = '<p class="meta">Asking resolvers…</p>';
+        var results = await Promise.all(D.RESOLVERS.map(function (r) { return lookup(r, name, type); }));
+        out.innerHTML = '<h2>' + esc(type) + ' records for ' + esc(name) + '</h2>' + results.map(function (s, i) { return render(D.RESOLVERS[i], s); }).join('');
+      });
+      if (q.get('name')) form.requestSubmit();
+    })();
+  </script>
+</Base>
