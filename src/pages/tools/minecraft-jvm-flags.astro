@@ -1,0 +1,70 @@
+---
+import Base from '../../layouts/Base.astro';
+import ToolSchema from '../../components/ToolSchema.astro';
+const sizes = [4, 6, 8, 10, 12, 14, 16, 20, 24];
+---
+<Base image="/og/tool-minecraft-jvm-flags.png" title="Minecraft server JVM flags generator" description="Generate Aikar's flags for your Minecraft server: a user_jvm_args.txt for NeoForge/Forge modpacks or a start script for Paper and vanilla.">
+  <ToolSchema />
+  <div class="prose" data-pagefind-body>
+    <h1>Minecraft server JVM flags generator</h1>
+    <p class="lede">Pick how much RAM your server gets and what kind of server it is, and get the widely used <strong>Aikar's flags</strong> in the right format: a <code>user_jvm_args.txt</code> for modpacks, or a start script for Paper and vanilla.</p>
+    <p class="meta">Runs entirely in your browser. Flags as published at <a href="https://mcflags.emc.gs" rel="noopener">mcflags.emc.gs</a>.</p>
+  </div>
+
+  <form class="tool" id="mc">
+    <fieldset>
+      <legend>Server</legend>
+      <label class="row"><span>RAM for Minecraft</span>
+        <select name="gb">{sizes.map((g) => <option value={g} selected={g === 10}>{g} GB</option>)}</select>
+      </label>
+      <label class="row"><span>Server type</span>
+        <select name="kind">
+          <option value="args-file">NeoForge / Forge modpack (user_jvm_args.txt)</option>
+          <option value="jar">Paper / Purpur / vanilla (start script)</option>
+        </select>
+      </label>
+      <label class="row"><span>Java command (optional)</span><input type="text" name="java" value="java" spellcheck="false" /></label>
+      <label class="row"><span>Server jar (Paper/vanilla)</span><input type="text" name="jar" value="server.jar" spellcheck="false" /></label>
+      <button type="submit" class="action">Generate</button>
+    </fieldset>
+  </form>
+
+  <h2 id="fname">user_jvm_args.txt</h2>
+  <pre class="out"><code id="out"></code></pre>
+  <button type="button" class="copy" id="copy">Copy</button>
+
+  <div class="prose">
+    <h2>How much RAM?</h2>
+    <ul>
+      <li><strong>Vanilla / Paper, a few friends:</strong> 4–6 GB. More doesn't make it faster.</li>
+      <li><strong>Big modpacks</strong> (All The Mods and similar): 8 GB minimum, 10–12 GB is comfortable with a few players.</li>
+      <li>Leave room for the operating system and everything else on the machine. The flags pre-allocate the whole amount at startup (<code>-Xms</code> = <code>-Xmx</code> plus <code>AlwaysPreTouch</code>), so that memory is taken right away.</li>
+    </ul>
+    <h2>Where it goes</h2>
+    <ul>
+      <li><strong>NeoForge / Forge:</strong> replace the contents of <code>user_jvm_args.txt</code> in the server folder. The start command reads it via <code>@user_jvm_args.txt</code>. Memory settings in panels like Crafty don't apply then; this file wins. <a href="/blog/crafty-controller-modpack-import/">More on modpacks in Crafty</a>.</li>
+      <li><strong>Modern modpacks (Minecraft 1.20.5+)</strong> need <strong>Java 21</strong>. If <code>java</code> on your server is a different version, put the full path to Java 21 in the Java command field.</li>
+      <li><strong>Paper / vanilla:</strong> save as <code>start.sh</code>, <code>chmod +x start.sh</code>, run it.</li>
+    </ul>
+  </div>
+
+  <script is:inline src="/tools/mc-flags.js"></script>
+  <script is:inline>
+    (function () {
+      var form = document.getElementById('mc'), el = form.elements;
+      function update() {
+        var r = window.McFlags.generate({ gb: el.namedItem('gb').value, kind: el.namedItem('kind').value, java: el.namedItem('java').value, jar: el.namedItem('jar').value });
+        var out = document.getElementById('out');
+        if (!r.ok) { out.textContent = r.error; out.className = 'warn'; return; }
+        out.className = ''; out.textContent = r.text;
+        document.getElementById('fname').textContent = r.filename;
+      }
+      form.addEventListener('submit', function (e) { e.preventDefault(); update(); });
+      form.addEventListener('change', update);
+      document.getElementById('copy').addEventListener('click', function () {
+        var b = this; navigator.clipboard && navigator.clipboard.writeText(document.getElementById('out').textContent).then(function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1200); });
+      });
+      update();
+    })();
+  </script>
+</Base>

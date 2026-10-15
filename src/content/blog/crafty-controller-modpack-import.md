@@ -41,7 +41,7 @@ Crafty has min/max memory fields, but with a NeoForge command like the one above
 -Xmx12G
 ```
 
-Edit that file. Crafty's fields don't touch it. ATM10 is hungry: 8 GB is a sensible minimum, and 10–12 GB is comfortable with a few players.
+Edit that file. Crafty's fields don't touch it. The [Minecraft JVM flags generator](/tools/minecraft-jvm-flags/) writes a complete one, with tuned garbage-collection flags, for whatever RAM you pick. ATM10 is hungry: 8 GB is a sensible minimum, and 10–12 GB is comfortable with a few players.
 
 ## Ports
 

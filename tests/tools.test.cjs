@@ -94,3 +94,20 @@ test('roblox generator: validates input and emits checks', () => {
     'lastCall[player] = nil',
   ]) assert.ok(r.code.includes(needle), 'missing: ' + needle);
 });
+
+load('mc-flags.js');
+test('minecraft flags: Aikar tuning switches above 12 GB, safe inputs only', () => {
+  const mc = globalThis.McFlags;
+  const small = mc.flags(10), big = mc.flags(16);
+  assert.ok(small.includes('-Xms10G') && small.includes('-Xmx10G') && small.includes('-XX:G1HeapRegionSize=8M') && small.includes('-XX:G1NewSizePercent=30'));
+  assert.ok(big.includes('-XX:G1HeapRegionSize=16M') && big.includes('-XX:G1NewSizePercent=40') && big.includes('-XX:InitiatingHeapOccupancyPercent=20'));
+  const file = mc.generate({ gb: 12, kind: 'args-file' });
+  assert.equal(file.filename, 'user_jvm_args.txt');
+  assert.ok(file.text.split('\n').includes('-Xmx12G'));
+  const sh = mc.generate({ gb: 8, kind: 'jar', java: '/usr/lib/jvm/java-21-openjdk-amd64/bin/java', jar: 'paper-1.21.jar' });
+  assert.ok(sh.text.startsWith('#!/bin/sh\n/usr/lib/jvm/java-21-openjdk-amd64/bin/java -Xms8G -Xmx8G '));
+  assert.ok(sh.text.trim().endsWith('-jar paper-1.21.jar nogui'));
+  assert.equal(mc.generate({ gb: 8, kind: 'jar', java: 'java; rm -rf /' }).ok, false);
+  assert.equal(mc.generate({ gb: 8, kind: 'jar', jar: 'x.sh' }).ok, false);
+  assert.equal(mc.generate({ gb: 1, kind: 'jar' }).ok, false);
+});
