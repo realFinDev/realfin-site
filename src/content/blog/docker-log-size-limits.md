@@ -42,7 +42,7 @@ Edit (or create) `/etc/docker/daemon.json` and add `log-opts`. Keep whatever is 
 }
 ```
 
-That's at most 3 files of 20 MB per container. Docker rotates them automatically. With ~30 containers, the worst case is about 2 GB, and in practice it's far less.
+That's at most 3 files of 20 MB per container. (The [Docker log size limit helper](/tools/docker-log-limits/) merges this into your existing file and estimates the disk use.) Docker rotates them automatically. With ~30 containers, the worst case is about 2 GB, and in practice it's far less.
 
 Validate the JSON before restarting. A typo stops Docker from starting at all:
 

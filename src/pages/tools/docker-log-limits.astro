@@ -1,0 +1,79 @@
+---
+import Base from '../../layouts/Base.astro';
+const example = `{
+    "runtimes": {
+        "nvidia": {
+            "path": "nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+    },
+    "shutdown-timeout": 60
+}`;
+---
+<Base image="/og/tool-docker-log-limits.png" title="Docker log size limit helper" description="Cap Docker's container logs: paste your daemon.json, choose max-size and max-file, and get the merged config plus the worst-case disk usage.">
+  <div class="prose" data-pagefind-body>
+    <h1>Docker log size limit helper</h1>
+    <p class="lede">Docker keeps container logs forever by default. Paste your current <code>/etc/docker/daemon.json</code>, pick a limit, and get the merged file back, with everything you already had kept intact.</p>
+    <p class="meta">Runs entirely in your browser. Nothing you paste is sent anywhere.</p>
+  </div>
+
+  <form class="tool" id="dl">
+    <fieldset>
+      <legend>Your current daemon.json (leave empty if you don't have one)</legend>
+      <textarea name="existing" spellcheck="false" aria-label="current daemon.json">{example}</textarea>
+    </fieldset>
+    <fieldset>
+      <legend>Limits</legend>
+      <label class="row"><span>Max size per log file</span>
+        <select name="size"><option>10m</option><option selected>20m</option><option>50m</option><option>100m</option></select>
+      </label>
+      <label class="row"><span>Files kept per container</span>
+        <select name="files"><option>2</option><option selected>3</option><option>5</option></select>
+      </label>
+      <label class="row"><span>Number of containers (for the estimate)</span>
+        <select name="containers"><option>10</option><option>20</option><option selected>30</option><option>50</option><option>100</option></select>
+      </label>
+      <button type="submit" class="action">Generate</button>
+    </fieldset>
+  </form>
+
+  <p id="estimate"></p>
+  <h2>New daemon.json</h2>
+  <pre class="out"><code id="out"></code></pre>
+  <button type="button" class="copy" id="copy">Copy</button>
+
+  <div class="prose">
+    <h2>Applying it</h2>
+    <ol>
+      <li>Save it as <code>/etc/docker/daemon.json</code> (needs <code>sudo</code>). Keep a backup of the old file.</li>
+      <li><code>sudo systemctl restart docker</code>: all containers restart once.</li>
+      <li><strong>Recreate</strong> your containers, because log settings only apply to containers created afterwards: <code>docker compose up -d --force-recreate</code> in each stack's folder.</li>
+      <li>Check: <code>docker inspect &lt;container&gt; --format '&#123;&#123;.HostConfig.LogConfig&#125;&#125;'</code></li>
+    </ol>
+    <p>Background and the one-liner to recreate every running stack: <a href="/blog/docker-log-size-limits/">Docker logs ate 2.4 GB on my server</a>.</p>
+  </div>
+
+  <script is:inline src="/tools/docker-logs.js"></script>
+  <script is:inline>
+    (function () {
+      var form = document.getElementById('dl'), el = form.elements, D = window.DockerLogs;
+      function update() {
+        var size = el.namedItem('size').value, files = +el.namedItem('files').value, n = +el.namedItem('containers').value;
+        var r = D.merge(el.namedItem('existing').value, size, files);
+        var out = document.getElementById('out');
+        if (!r.ok) { out.textContent = r.error; out.className = 'warn'; }
+        else { out.textContent = r.json; out.className = ''; }
+        var w = D.worstCase(n, size, files);
+        document.getElementById('estimate').textContent = w
+          ? 'Worst case: ' + D.human(w.perContainer) + ' per container, ' + D.human(w.total) + ' for ' + n + ' containers. Most containers log far less.'
+          : '';
+      }
+      form.addEventListener('submit', function (e) { e.preventDefault(); update(); });
+      form.addEventListener('change', update);
+      document.getElementById('copy').addEventListener('click', function () {
+        var b = this; navigator.clipboard && navigator.clipboard.writeText(document.getElementById('out').textContent).then(function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1200); });
+      });
+      update();
+    })();
+  </script>
+</Base>

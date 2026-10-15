@@ -4,7 +4,7 @@ import { TOOLS as tools } from '../../tools';
 ---
 <Base title="Tools" description="Small free tools for homelab and game server admins: Valheim server arguments, DNS record checker, Docker Compose port checker. They run in your browser.">
   <h1>Tools</h1>
-  <p class="lede">Small helpers I wanted for my own homelab. They run in your browser. The port checker and the Valheim tools send nothing anywhere; the DNS checker asks Cloudflare's and Google's public DNS directly, never this site.</p>
+  <p class="lede">Small helpers I wanted for my own homelab. They run in your browser. The port checker, log helper and Valheim tools send nothing anywhere; the DNS checker asks Cloudflare's and Google's public DNS directly, never this site.</p>
   <ul class="cards">
     {tools.map((t) => (
       <li class="card"><h3><a href={t.href}>{t.title}</a></h3><p>{t.text}</p></li>
