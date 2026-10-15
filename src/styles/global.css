@@ -100,3 +100,7 @@ button.copy, button.action { font: inherit; font-size: 0.9rem; background: var(-
 .skip:focus { left: 8px; }
 .tool input[type="search"] { font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 5px 8px; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.series { margin: 36px 0 8px; padding: 14px 18px; border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 10px; background: var(--surface); }
+.series ol { margin: 8px 0 4px; padding-left: 22px; font-size: 0.95rem; }
+.series [aria-current] { font-weight: 650; }
+.series .next { margin: 8px 0 0; font-size: 0.95rem; }

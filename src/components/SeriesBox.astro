@@ -1,0 +1,22 @@
+---
+import { SERIES } from '../consts';
+import { getPosts } from '../lib';
+interface Props { postId: string }
+const { postId } = Astro.props;
+const entry = Object.values(SERIES).find((s) => s.posts.includes(postId));
+const all = entry ? await getPosts() : [];
+const items = entry ? entry.posts.map((id) => all.find((p) => p.id === id)).filter((p) => p !== undefined) : [];
+const index = items.findIndex((p) => p.id === postId);
+---
+{entry && items.length > 1 && (
+  <nav class="series" aria-label={`Series: ${entry.title}`} data-pagefind-ignore>
+    <div class="meta">Part {index + 1} of {items.length} · Series</div>
+    <strong>{entry.title}</strong>
+    <ol>
+      {items.map((p, i) => (
+        <li>{i === index ? <span aria-current="page">{p.data.title}</span> : <a href={`/blog/${p.id}/`}>{p.data.title}</a>}</li>
+      ))}
+    </ol>
+    {index < items.length - 1 && <p class="next">Next: <a href={`/blog/${items[index + 1].id}/`}>{items[index + 1].data.title} →</a></p>}
+  </nav>
+)}

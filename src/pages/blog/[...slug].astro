@@ -7,6 +7,7 @@ import Comments from '../../components/Comments.astro';
 import PostCard from '../../components/PostCard.astro';
 import AuthorBox from '../../components/AuthorBox.astro';
 import Toc from '../../components/Toc.astro';
+import SeriesBox from '../../components/SeriesBox.astro';
 import { CATEGORIES } from '../../consts';
 import { getPosts, formatDate, readingTime, authorOf } from '../../lib';
 
@@ -66,6 +67,7 @@ const jsonLd = {
     <AdSlot ads={ads} />
     <div class="prose"><Content /></div>
     <AdSlot ads={ads} />
+    <SeriesBox postId={post.id} />
     <AuthorBox author={author} />
     <p class="meta" data-pagefind-ignore>Found a mistake or something out of date? <a href={editUrl} rel="nofollow">Suggest an edit on GitHub</a> or <a href="/contact/">tell me</a>.</p>
   </article>

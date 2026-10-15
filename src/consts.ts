@@ -32,3 +32,26 @@ export const IS_PRODUCTION = (process.env.CF_PAGES_BRANCH ?? 'main') === 'main';
 // Guest authors (Decap CMS at /admin/). Turn on once the GitHub OAuth app is set up and
 // GITHUB_CLIENT_ID / GITHUB_CLIENT_SECRET are configured in Cloudflare Pages.
 export const GUEST_AUTHORING = false;
+
+// Post series: ordered lists of post ids. Each post in a series shows a "Part X of Y" box.
+export const SERIES: Record<string, { title: string; posts: string[] }> = {
+  'valheim-server': {
+    title: 'Running a Valheim server for friends',
+    posts: [
+      'valheim-dedicated-server-docker',
+      'valheim-import-world-new-save-format',
+      'valheim-whitelist-instead-of-password',
+      'valheim-server-lag-better-networking',
+      'valheim-mods-client-vs-server',
+      'valheim-crops-not-growing-empty-server',
+    ],
+  },
+  'homelab-dns': {
+    title: 'Home DNS: ad blocking and my own resolver',
+    posts: ['adguard-unbound-network-adblock', 'unbound-servfail-after-internet-outage', 'dns-negative-caching-new-subdomain', 'adguard-blocked-my-own-adsense-dashboard'],
+  },
+  'homelab-maintenance': {
+    title: 'Keeping a homelab healthy',
+    posts: ['homelab-health-check-checklist', 'zigbee2mqtt-restart-loop-docker-network', 'docker-log-size-limits', 'docker-reclaimable-space-misleading', 'certbot-standalone-port-conflict', 'docker-stop-before-reboot-mistake'],
+  },
+};
