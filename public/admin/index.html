@@ -9,5 +9,9 @@
   <body>
     <!-- Decap CMS, pinned version. Authors sign in with GitHub; with open_authoring their posts arrive as pull requests. -->
     <script src="https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js"></script>
+    <script>
+      // Make the preview pane look like the real site.
+      CMS.registerPreviewStyle('/admin/preview.css');
+    </script>
   </body>
 </html>

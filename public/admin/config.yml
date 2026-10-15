@@ -62,7 +62,30 @@ collections:
         default: true
         hint: 'Your choice. Off = no ads at all on this post.'
       - { label: Draft, name: draft, widget: hidden, default: false }
-      - { label: Post, name: body, widget: markdown }
+      - label: Post
+        name: body
+        widget: markdown
+        hint: 'Replace the prompts below with your own story. Real details beat polished prose.'
+        default: |
+          ## What I wanted to do
+
+          One or two sentences: what were you trying to build, run or fix, and why?
+
+          ## My setup
+
+          Hardware, software, versions: only what matters for this story. Remove IPs, hostnames, usernames and keys from anything you paste.
+
+          ## What went wrong (or what surprised me)
+
+          The error message, the weird behaviour, the thing the docs didn't mention.
+
+          ## What fixed it
+
+          The exact steps, commands or settings that worked, and the ones that didn't.
+
+          ## What I'd tell someone trying this
+
+          Your takeaway in a few bullet points.
 
   - name: authors
     label: Authors
