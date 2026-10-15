@@ -76,7 +76,7 @@ When you open a chest normally, the game first asks the current owner to hand it
 
 ## Writing a replacement
 
-I wanted the same convenience without either problem, so I wrote a small client-side BepInEx mod, **ChestCrafting**. Only the player using it needs it, not the server or the other players. The idea is to change as little as possible:
+I wanted the same convenience without either problem, so I wrote a small client-side BepInEx mod, **[ChestCrafting](https://github.com/realFinDev/ChestCrafting)** (MIT licensed, source and install steps on GitHub). Only the player using it needs it, not the server or the other players. The idea is to change as little as possible:
 
 **1. Don't replace the game's crafting logic. Just extend the player's inventory at the right moments.** The game checks and removes ingredients through `Inventory.CountItems` and `Inventory.RemoveItem`. The mod patches those two (with [Harmony](https://harmony.pardeike.net/)), and only while the game is inside a crafting or building check, and only for the local player's inventory:
 
@@ -126,5 +126,7 @@ Every crafting station uses the same `UpdateRecipe` → `DoCrafting` → `Consum
 - **A crash in the middle of a game loop is worse than a crash.** Here an exception that skipped one line (`m_craftTimer = -1f`) turned "crafting failed" into "crafting repeats forever".
 - **In a multiplayer game, ask who owns the data before you change it.**
 - **When a mod misbehaves, decompile it.** It took ten minutes to go from "weird bug" to the exact line, and it's the best way to tell whether a mod is safe on a shared server.
+
+**Get it:** [ChestCrafting on GitHub](https://github.com/realFinDev/ChestCrafting). Download `ChestCrafting.dll` from Releases and put it in `BepInEx/plugins`. Found a bug? [Open an issue](https://github.com/realFinDev/ChestCrafting/issues).
 
 Earlier in this series: [which Valheim mods need to be on the server and which don't](/blog/valheim-mods-client-vs-server/).
