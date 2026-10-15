@@ -58,3 +58,11 @@ and give each server a free port in that range. Remember, a port only reaches fr
 ## Backups
 
 Modpack worlds are precious and the servers are big. My [nightly backup script](/blog/homelab-backup-script-docker/) archives each server folder but skips `libraries`, `cache`, `logs` and `crash-reports`, which can all be re-downloaded or are useless. That keeps the archives a fraction of the full size.
+
+## Troubleshooting checklist
+
+- **Server won't start, log mentions Java class versions** → wrong Java. Check the path in the execution command.
+- **Crafty shows the server but can't edit files** → ownership. The swapped-in files must belong to the same user as Crafty's other server folders.
+- **Crafty "forgot" the server** → `crafty_managed.txt` was deleted during the swap. Put it back from the placeholder.
+- **Out of memory crashes after an hour** → raise `-Xmx` in `user_jvm_args.txt`, and keep an eye on the host's free RAM so the OS isn't starved.
+- **Friends time out while connecting** → modpacks take minutes to start. Wait for "Done" in the console before joining, and make sure everyone runs the *same* modpack version.

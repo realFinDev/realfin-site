@@ -87,3 +87,17 @@ services:
 ```
 
 Do this on day one of any Docker host. It's two lines, and it saves a full disk later.
+
+## FAQ
+
+**Will I lose logs I need?**
+You keep the newest ~60 MB per container. For a home server that's days or weeks of normal output. If you need long-term history (for auditing, say), send logs to a proper log system instead of keeping them in Docker's files.
+
+**Does `docker compose logs` still work?**
+Yes. Rotation is invisible to `docker logs`; you just can't scroll back past the oldest kept file.
+
+**What about the `local` log driver?**
+Docker's `local` driver compresses logs and rotates by default, which is another good option. I stayed with `json-file` because some monitoring tools read those files directly.
+
+**Do I need to repeat this after updating images?**
+No. Pulling a new image and recreating a container (`docker compose up -d`) creates it with the daemon defaults, so the limit sticks.

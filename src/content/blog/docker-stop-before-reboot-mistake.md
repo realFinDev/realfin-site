@@ -67,3 +67,19 @@ for d in ~/dockerapps/*/; do (cd "$d" && docker compose up -d); done
 
 
 `unless-stopped` is still the right default: it lets you turn things off on purpose. Just never "turn everything off on purpose" right before a reboot.
+
+## How to check what will come back after a reboot
+
+Before you reboot, this lists every container with its restart policy and whether Docker considers it user-stopped:
+
+```bash
+docker ps -a --format '{{.Names}}' | while read c; do
+  docker inspect "$c" --format '{{.Name}}  policy={{.HostConfig.RestartPolicy.Name}}  running={{.State.Running}}'
+done
+```
+
+Anything with `policy=unless-stopped running=false` will **stay down** after the reboot. That's what you want for retired projects, and a nasty surprise for anything you forgot about.
+
+## Testing it safely
+
+You don't need a real reboot to test restart behaviour. `sudo systemctl restart docker` stops and starts the daemon the same way a reboot does, so containers come back according to their policy. Do it at a quiet time, because everything restarts once.

@@ -73,3 +73,17 @@ Add their ID on a new line and restart the server. The list is read on start-up.
 ## Admins
 
 `adminlist.txt` in the same folder works the same way. IDs listed there can use admin console commands in-game (F5: `kick`, `ban`, `save`…). Only add people you'd trust with your world.
+
+## Troubleshooting
+
+**A friend on the list still can't join.**
+Double-check the ID: it must be the 17-digit SteamID64, not their profile name or friend code. Then make sure you restarted the server after editing the file.
+
+**The server still asks for a password.**
+Look at the actual start command with the `ps` line above. If `-password` is still there, the variable isn't empty. A stray space after `SERVER_PASS=` counts as a value.
+
+**Crossplay players (Xbox / Game Pass).**
+Crossplay identities aren't Steam IDs. The whitelist approach described here is for Steam players. With crossplay enabled, check how your server image handles platform IDs before relying on it.
+
+**What about bans?**
+`bannedlist.txt` works like the whitelist, one ID per line. With a whitelist in place you'll rarely need it: removing someone from `permittedlist.txt` and restarting is enough.

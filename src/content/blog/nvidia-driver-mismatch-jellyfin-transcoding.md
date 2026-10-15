@@ -73,3 +73,10 @@ On quiet days it does nothing. When updates land, roughly twice a month, the ser
 - Enable `Unattended-Upgrade::Automatic-Reboot "true"` in unattended-upgrades. It's simpler, but it doesn't catch the NVIDIA-specific case.
 
 Either way: if GPU features in Docker suddenly stop working after an update, run `nvidia-smi` on the host first.
+
+## Quick checklist when GPU transcoding breaks
+
+1. `nvidia-smi` on the **host**. Mismatch error → reboot.
+2. `docker exec jellyfin nvidia-smi`. If the host works but the container doesn't, the container's GPU runtime config is wrong (`runtime: nvidia` or a `deploy.resources` device reservation).
+3. Jellyfin → Dashboard → Playback: is NVENC still selected, and are the codecs your card supports ticked? A GTX 1050 Ti can decode HEVC 8/10-bit but not AV1.
+4. Check Jellyfin's transcode log for the actual FFmpeg error. It's far more specific than "fatal player error".
