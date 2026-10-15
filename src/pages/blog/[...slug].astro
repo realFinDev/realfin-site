@@ -78,4 +78,21 @@ const jsonLd = {
     </section>
   )}
   <Comments />
+  <script is:inline>
+    // "Copy" button on every code block in the post.
+    document.querySelectorAll('.prose pre').forEach(function (pre) {
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'code-copy'; btn.textContent = 'Copy';
+      btn.setAttribute('aria-label', 'Copy code to clipboard');
+      btn.addEventListener('click', function () {
+        var code = pre.querySelector('code') || pre;
+        if (!navigator.clipboard) return;
+        navigator.clipboard.writeText(code.textContent.replace(/\n$/, '')).then(function () {
+          btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 1200);
+        });
+      });
+      pre.classList.add('has-copy');
+      pre.appendChild(btn);
+    });
+  </script>
 </Base>

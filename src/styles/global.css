@@ -121,3 +121,6 @@ button.copy, button.action { font: inherit; font-size: 0.9rem; background: var(-
 .series .next { margin: 8px 0 0; font-size: 0.95rem; }
 .theme-toggle { font: inherit; font-size: 0.9rem; color: var(--muted); background: none; border: 1px solid var(--border); border-radius: 999px; padding: 2px 10px; cursor: pointer; }
 .theme-toggle:hover { color: var(--text); }
+.prose pre.has-copy { position: relative; padding-top: 30px; }
+.code-copy { position: absolute; top: 6px; right: 6px; font: inherit; font-size: 0.75rem; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 1px 8px; cursor: pointer; }
+.code-copy:hover { color: var(--text); }
