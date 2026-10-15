@@ -25,6 +25,6 @@ const series = Object.values(SERIES).filter((s) => s.posts.filter((id) => posts.
     <p>Tools: {tools.map((t, i) => <>{i > 0 && ' · '}<a href={t.href}>{t.title}</a></>)}</p>
   )}
   {posts.length > 0
-    ? <ul class="cards">{posts.map((post) => <PostCard post={post} />)}</ul>
+    ? <><h2 class="sr-only">Posts</h2><ul class="cards">{posts.map((post) => <PostCard post={post} />)}</ul></>
     : <p>First posts are on the way.</p>}
 </Base>

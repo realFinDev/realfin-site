@@ -13,6 +13,7 @@ const cats = Object.entries(CATEGORIES).filter(([k]) => posts.some((p) => p.data
     {cats.map(([k, c]) => <a class="pill" href={`/category/${k}/`}>{c.label} ({posts.filter((p) => p.data.category === k).length})</a>)}
     <a class="pill" href="/search/">Search…</a>
   </nav>
+  <h2 class="sr-only">All posts</h2>
   <ul class="cards">
     {posts.map((post) => <PostCard post={post} />)}
   </ul>
