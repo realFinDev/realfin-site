@@ -1,0 +1,14 @@
+# Security headers for every page (Cloudflare Pages reads this file automatically).
+# The CSP deliberately does not restrict scripts, so Google AdSense and Giscus comments keep working;
+# it only blocks framing, plugins and <base> hijacking, and upgrades any http:// resource to https://.
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+
+# Astro's hashed build files never change, so browsers can cache them for a year.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
