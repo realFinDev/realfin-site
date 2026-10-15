@@ -7,7 +7,7 @@ import sharp from 'sharp';
 
 const BLOG = 'src/content/blog';
 const OUT = 'public/og';
-const CATS = { homelab: 'Homelab', 'game-servers': 'Game servers', roblox: 'Roblox dev' };
+const CATS = { homelab: 'Homelab', 'game-servers': 'Game servers', roblox: 'Roblox dev', other: 'Experiences' };
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 

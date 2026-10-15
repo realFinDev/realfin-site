@@ -46,6 +46,7 @@ collections:
           - { label: Homelab, value: homelab }
           - { label: Game servers, value: game-servers }
           - { label: Roblox dev, value: roblox }
+          - { label: Other experiences, value: other }
       - { label: Tags, name: tags, widget: list, required: false, hint: 'A few lowercase keywords, e.g. docker, valheim' }
       - label: Author (your profile)
         name: author

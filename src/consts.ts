@@ -11,6 +11,7 @@ export const CATEGORIES = {
   homelab: { label: 'Homelab', blurb: 'Docker, networking, backups and the things that broke along the way.' },
   'game-servers': { label: 'Game servers', blurb: 'Running Valheim and Minecraft servers for friends, from setup to mods to weird bugs.' },
   roblox: { label: 'Roblox dev', blurb: 'Building a Roblox game with AI as a coding partner.' },
+  other: { label: 'Other experiences', blurb: 'First-hand stories from guest authors that don\'t fit the other sections.' },
 } as const;
 export type Category = keyof typeof CATEGORIES;
 
