@@ -26,6 +26,8 @@ example.dev.   1800   IN   SOA   ns1.example.net. dns.example.net. ...
 
 The number (`1800`) is the seconds left before the resolver asks again. Cloudflare-hosted zones allow negative caching for 30 minutes, and Unbound's own cap (`cache-max-negative-ttl`) defaults to **3600 s**. So a name you looked up "too early" can stay broken at home for up to half an hour, while the rest of the internet already sees it.
 
+You can see a domain's negative-caching time without a terminal in the [DNS record checker](/tools/dns-checker/): look up a name that doesn't exist and it shows how long resolvers may remember that.
+
 ## The fix: cap negative caching
 
 In `unbound.conf`, under `server:`:

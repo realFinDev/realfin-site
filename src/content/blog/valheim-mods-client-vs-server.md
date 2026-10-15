@@ -52,3 +52,4 @@ Valheim doesn't disable Steam achievements for mods, and server mods can't affec
 
 - **r2modman** or the **Thunderstore Mod Manager** for your PC. Search by **author name** if a mod's title has special characters. Always launch with the **Modded** button.
 - On a Docker server ([setup](/blog/valheim-dedicated-server-docker/)), set `BEPINEX=true` and put DLLs in `config/bepinex/plugins`.
+- World settings without mods: the [Valheim world modifier generator](/tools/valheim-server-modifiers/).

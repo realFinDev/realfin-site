@@ -42,9 +42,10 @@ Things I've done on my own server, roughly in order of how much they matter:
 4. **Hash admin tokens.** Vaultwarden's admin token can be stored as an Argon2 hash instead of plain text (`docker exec -it vaultwarden /vaultwarden hash`).
 5. **Change default passwords.** qBittorrent famously shipped with `admin` / `adminadmin`. Every admin UI gets a unique password stored in a password manager.
 6. **SSH with keys only**, no root login.
-7. **Host firewall (ufw)**: default deny inbound, allow your LAN and the Tailscale interface. Remember point 3 above: it doesn't cover Docker-published ports, so bind those carefully.
-8. **Keep updating.** Ubuntu security updates install automatically. Containers get `docker compose pull && docker compose up -d` regularly.
-9. **Backups**, because security also means recovering from your own mistakes. [My backup script](/blog/homelab-backup-script-docker/).
+7. **Check what you actually publish.** Paste your compose files into the [Docker Compose port checker](/tools/compose-port-checker/): it lists every published port, flags services open to the whole network and spots conflicts.
+8. **Host firewall (ufw)**: default deny inbound, allow your LAN and the Tailscale interface. Remember from above: it doesn't cover Docker-published ports, so bind those carefully.
+9. **Keep updating.** Ubuntu security updates install automatically. Containers get `docker compose pull && docker compose up -d` regularly.
+10. **Backups**, because security also means recovering from your own mistakes. [My backup script](/blog/homelab-backup-script-docker/).
 
 ## What I write about publicly
 

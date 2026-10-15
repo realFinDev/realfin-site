@@ -77,6 +77,8 @@ The in-game "World Modifiers" (combat, death penalty, resources, raids, portals)
 
 The server log confirms them on start: `Setting world modifier: raids->none`.
 
+To get the exact line without looking up the option names, use the [Valheim world modifier generator](/tools/valheim-server-modifiers/).
+
 ## Next steps
 
 - [Import an existing world from a friend's PC](/blog/valheim-import-world-new-save-format/)

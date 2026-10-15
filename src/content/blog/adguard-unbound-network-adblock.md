@@ -75,6 +75,8 @@ In the router's DHCP settings, set the **DNS server** handed out to clients to y
 
 AdGuard's **DNS rewrites** can map a wildcard like `*.lan-name` to your server's IP. Combined with a reverse proxy (I use Nginx Proxy Manager), every service gets a readable HTTPS address on the LAN, and no new DNS entry is needed per service.
 
+To compare what your home DNS answers with what the rest of the internet sees, the [DNS record checker](/tools/dns-checker/) shows Cloudflare's and Google's answers side by side.
+
 ## Is it worth it?
 
 Yes, it's the single most noticeable thing in my homelab. Pages load faster, smart TVs stop phoning home every few seconds, and the query log shows exactly what every device is doing.
