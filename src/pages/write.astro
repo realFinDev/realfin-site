@@ -1,16 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
+import { GUEST_AUTHORING } from '../consts';
 const updated = '15 October 2026';
 ---
 <Base title="Write for RealFin" description="Share your own homelab, game server or Roblox dev experience on RealFin. How it works, what we publish and the contributor terms.">
   <div class="prose">
     <h1>Write for RealFin</h1>
     <p class="lede">Built something, broke something, fixed something? Write it up here. RealFin publishes first-hand experiences from people who actually did the thing.</p>
+    {!GUEST_AUTHORING && (
+      <blockquote><strong>Opening soon.</strong> The guest editor isn't open yet. Read the guidelines below in the meantime, and check back shortly.</blockquote>
+    )}
 
     <h2>How it works</h2>
     <ol>
       <li><strong>Get a free GitHub account</strong> if you don't have one. It's only used to sign in. Your password never touches this site.</li>
-      <li>Open the <a href="/admin/" rel="nofollow">editor</a> and sign in with GitHub. The first time, it creates your own copy of the site in your GitHub account. That's normal.</li>
+      <li>Open the {GUEST_AUTHORING ? <a href="/admin/" rel="nofollow">editor</a> : 'editor (opening soon)'} and sign in with GitHub. The first time, it creates your own copy of the site in your GitHub account. That's normal.</li>
       <li><strong>Create your author profile</strong> under <em>Authors</em> (a nickname is fine), then write your post under <em>Posts</em>.</li>
       <li>Click <strong>Publish → Ready for review</strong>. Your post comes to me as a suggestion. Nothing goes live until I've read it.</li>
       <li>I might suggest edits, then publish it, and you'll appear on the <a href="/authors/">authors page</a> with your own profile.</li>

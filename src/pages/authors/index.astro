@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { getAuthors, getPosts, avatarOf } from '../../lib';
+import { GUEST_AUTHORING } from '../../consts';
 const authors = await getAuthors();
 const posts = await getPosts();
 const count = (id: string) => posts.filter((p) => p.data.author.id === id).length;
@@ -8,7 +9,7 @@ const sorted = authors.sort((a, b) => count(b.id) - count(a.id));
 ---
 <Base title="Authors" description="The people writing on RealFin, and how to join them.">
   <h1>Authors</h1>
-  <p class="lede">Real people writing about things they actually built, broke and fixed. <a href="/write/">Want to write here?</a></p>
+  <p class="lede">Real people writing about things they actually built, broke and fixed. {GUEST_AUTHORING && <a href="/write/">Want to write here?</a>}</p>
   <ul class="cards">
     {sorted.map((a) => (
       <li class="card author-card">

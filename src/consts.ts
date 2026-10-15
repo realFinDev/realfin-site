@@ -28,3 +28,7 @@ export const GISCUS = {
 // Cloudflare Pages sets CF_PAGES_BRANCH during builds. Anything other than main is staging:
 // no ads, noindex, robots.txt disallows everything. Local builds count as production.
 export const IS_PRODUCTION = (process.env.CF_PAGES_BRANCH ?? 'main') === 'main';
+
+// Guest authors (Decap CMS at /admin/). Turn on once the GitHub OAuth app is set up and
+// GITHUB_CLIENT_ID / GITHUB_CLIENT_SECRET are configured in Cloudflare Pages.
+export const GUEST_AUTHORING = false;

@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PostCard from '../components/PostCard.astro';
-import { CATEGORIES } from '../consts';
+import { CATEGORIES, GUEST_AUTHORING } from '../consts';
 import { getPosts } from '../lib';
 const posts = await getPosts();
 const latest = posts.slice(0, 6);
@@ -15,7 +15,7 @@ const startHere = ['homelab-tour-30-containers', 'homelab-security-no-port-forwa
   <p class="lede">
     One home server, about thirty Docker containers: media, smart home, DNS, a local AI and game servers for friends.
     This is where I write up how it works, what broke and how I fixed it, plus building a Roblox game with AI.
-    <a href="/write/">Other people's first-hand stories are welcome too.</a>
+    {GUEST_AUTHORING && <a href="/write/">Other people's first-hand stories are welcome too.</a>}
   </p>
   <div class="cats">
     {activeCats.map(([key, c]) => (

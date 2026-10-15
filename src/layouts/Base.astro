@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { SITE_TITLE, SITE_DESCRIPTION, ADSENSE_CLIENT, IS_PRODUCTION } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION, ADSENSE_CLIENT, IS_PRODUCTION, GUEST_AUTHORING } from '../consts';
 
 interface Props {
   title?: string;
@@ -77,7 +77,7 @@ const nav = [
       <div class="wrap">
         <nav aria-label="Footer">
           <a href="/about/">About</a>
-          <a href="/write/">Write for us</a>
+          {GUEST_AUTHORING && <a href="/write/">Write for us</a>}
           <a href="/contact/">Contact</a>
           <a href="/privacy/">Privacy policy</a>
           <a href="/rss.xml">RSS</a>

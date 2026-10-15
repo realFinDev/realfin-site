@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { GUEST_AUTHORING } from '../consts';
 ---
 <Base title="Contact" description="How to reach RealFin.">
   <div class="prose">
@@ -7,7 +8,7 @@ import Base from '../layouts/Base.astro';
     <p>The easiest way to reach me is by email: <a href="mailto:hello@realfin.dev">hello@realfin.dev</a>.</p>
     <p>Corrections are very welcome. If something in a guide is wrong or out of date, tell me and I'll fix it and credit you.</p>
     <p>For questions about a specific post, the comment section under each post works too (sign in with GitHub).</p>
-    <p>Want to write a post yourself? See <a href="/write/">Write for RealFin</a>. To report illegal content or your personal data on the site, see <a href="/write/#report">Report a problem</a>.</p>
+    <p>{GUEST_AUTHORING && <>Want to write a post yourself? See <a href="/write/">Write for RealFin</a>. </>}To report illegal content or your personal data on the site, see <a href="/write/#report">Report a problem</a>.</p>
     <p>I don't do paid server setups or sponsored posts right now. If that changes, it'll say so here.</p>
   </div>
 </Base>
