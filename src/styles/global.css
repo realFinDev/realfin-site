@@ -124,3 +124,11 @@ button.copy, button.action { font: inherit; font-size: 0.9rem; background: var(-
 .prose pre.has-copy { position: relative; padding-top: 30px; }
 .code-copy { position: absolute; top: 6px; right: 6px; font: inherit; font-size: 0.75rem; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 1px 8px; cursor: pointer; }
 .code-copy:hover { color: var(--text); }
+@media print {
+  header.site, footer.site, .toc, .ad-slot, .code-copy, .theme-toggle, .skip, .comments, .series .next, nav[aria-label="On this page"] { display: none !important; }
+  body { background: #fff; color: #000; font-size: 11pt; }
+  a { color: #000; }
+  .prose a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; color: #444; }
+  .prose pre { white-space: pre-wrap; border: 1px solid #999; background: #f5f5f5; }
+  main { padding: 0; }
+}
