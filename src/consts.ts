@@ -23,3 +23,7 @@ export const GISCUS = {
   category: 'Comments',
   categoryId: '',
 };
+
+// Cloudflare Pages sets CF_PAGES_BRANCH during builds. Anything other than main is staging:
+// no ads, noindex, robots.txt disallows everything. Local builds count as production.
+export const IS_PRODUCTION = (process.env.CF_PAGES_BRANCH ?? 'main') === 'main';
