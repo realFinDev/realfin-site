@@ -1,0 +1,57 @@
+# Runs on every pull request, including guest posts from forks (open authoring).
+# Uses the safe `pull_request` trigger: fork PRs get a read-only token and no secrets.
+name: Check pull request
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Guest PRs may only touch posts, author profiles and post images
+        if: github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          base="${{ github.event.pull_request.base.sha }}"
+          changed=$(git diff --name-only "$base"...HEAD)
+          echo "Changed files:"; echo "$changed"
+          bad=$(echo "$changed" | grep -vE '^(src/content/blog/[a-z0-9-]+\.md|src/content/authors/[a-z0-9-]+\.json|public/images/posts/[^/]+\.(png|jpe?g|webp|gif))$' || true)
+          if [ -n "$bad" ]; then
+            echo "::error::This pull request changes files guests are not allowed to change:"
+            echo "$bad" | sed 's/^/  - /'
+            exit 1
+          fi
+          # Guests can't claim the editor's profile or make themselves editors.
+          if echo "$changed" | grep -qE '^src/content/authors/realfin\.json$'; then
+            echo "::error::Guests may not edit the editor's author profile."; exit 1
+          fi
+          if git diff "$base"...HEAD -- 'src/content/authors/*.json' | grep -qE '^\+.*"role":\s*"editor"'; then
+            echo "::error::Guest author profiles must have role contributor."; exit 1
+          fi
+          if git diff "$base"...HEAD -- 'src/content/blog/*.md' | grep -qE '^\+author:\s*realfin\s*$'; then
+            echo "::warning::A guest post claims to be written by realfin. Check the author before merging."
+          fi
+
+      - name: Images must be reasonably small
+        run: |
+          find public/images/posts -type f -size +2M -print | while read f; do
+            echo "::error file=$f::Image is larger than 2 MB, please compress it"; exit 1
+          done
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build the site (catches broken front matter, unknown authors, bad dates)
+        run: npm run build
