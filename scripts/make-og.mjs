@@ -52,4 +52,11 @@ for (const f of fs.readdirSync(BLOG).filter((f) => f.endsWith('.md'))) {
   await render(f.replace(/\.md$/, '.png'), { title: title.replace(/\\"/g, '"'), label: CATS[cat] ?? 'RealFin' });
   n++;
 }
-console.log(`generated default + ${n} post images in ${OUT}/`);
+// Tools: titles from src/tools.ts, image named after the URL slug (tool-<slug>.png).
+const toolsSrc = fs.readFileSync('src/tools.ts', 'utf8');
+let t = 0;
+for (const m of toolsSrc.matchAll(/href: '\/tools\/([a-z0-9-]+)\/', title: '([^']+)'/g)) {
+  await render(`tool-${m[1]}.png`, { title: m[2], label: 'Free tool' });
+  t++;
+}
+console.log(`generated default + ${n} post images + ${t} tool images in ${OUT}/`);
