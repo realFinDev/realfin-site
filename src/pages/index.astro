@@ -5,12 +5,16 @@ import { CATEGORIES } from '../consts';
 import { getPosts } from '../lib';
 const posts = await getPosts();
 const latest = posts.slice(0, 6);
+const startHere = ['homelab-tour-30-containers', 'homelab-security-no-port-forwards', 'valheim-dedicated-server-docker']
+  .map((id) => posts.find((p) => p.id === id))
+  .filter((p) => p !== undefined);
 ---
 <Base>
   <h1>A real homelab, written down.</h1>
   <p class="lede">
-    I run a home server with about thirty Docker containers: media, smart home, DNS, a local AI and game servers for my friends.
-    This site is where I write up how it all works, what broke and how I fixed it. Lately I'm also building a Roblox game with AI as my coding partner.
+    One home server, about thirty Docker containers: media, smart home, DNS, a local AI and game servers for friends.
+    This is where I write up how it works, what broke and how I fixed it, plus building a Roblox game with AI.
+    <a href="/write/">Other people's first-hand stories are welcome too.</a>
   </p>
   <div class="cats">
     {Object.entries(CATEGORIES).map(([key, c]) => (
@@ -20,9 +24,31 @@ const latest = posts.slice(0, 6);
       </a>
     ))}
   </div>
+
+  {startHere.length > 0 && (
+    <section>
+      <h2>Start here</h2>
+      <ul class="cards">{startHere.map((post) => <PostCard post={post} />)}</ul>
+    </section>
+  )}
+
+  <section>
+    <h2>Free tools</h2>
+    <div class="cats">
+      <a class="card" href="/tools/valheim-server-modifiers/" style="text-decoration:none">
+        <h3 style="margin-top:0;color:var(--text)">Valheim modifier generator</h3>
+        <p>World settings → exact dedicated-server arguments.</p>
+      </a>
+      <a class="card" href="/tools/compose-port-checker/" style="text-decoration:none">
+        <h3 style="margin-top:0;color:var(--text)">Compose port checker</h3>
+        <p>Find port conflicts and services open to your whole network.</p>
+      </a>
+    </div>
+  </section>
+
   <h2>Latest posts</h2>
   <ul class="cards">
     {latest.map((post) => <PostCard post={post} />)}
   </ul>
-  <p><a href="/blog/">All posts →</a></p>
+  <p><a href="/blog/">All {posts.length} posts →</a> · <a href="/search/">Search</a> · <a href="/rss.xml">RSS</a></p>
 </Base>

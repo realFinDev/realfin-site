@@ -3,5 +3,13 @@ import Base from '../layouts/Base.astro';
 ---
 <Base title="Not found">
   <h1>404: nothing here</h1>
-  <p class="lede">That page doesn't exist (or I renamed it). Try the <a href="/blog/">blog</a> instead.</p>
+  <p class="lede">That page doesn't exist, or I renamed it.</p>
+  <form action="/search/" method="get" class="tool" role="search">
+    <fieldset>
+      <legend>Search the site instead</legend>
+      <label class="row"><span>Search for</span><input type="search" name="q" required style="flex:1;min-width:200px" /></label>
+      <button type="submit" class="action">Search</button>
+    </fieldset>
+  </form>
+  <p>Or browse <a href="/blog/">all posts</a> and the <a href="/tools/">tools</a>.</p>
 </Base>

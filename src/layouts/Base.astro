@@ -57,6 +57,7 @@ const nav = [
     )}
   </head>
   <body data-author={author}>
+    <a class="skip" href="#main">Skip to content</a>
     <header class="site">
       <div class="wrap">
         <a class="brand" href="/">Real<span>Fin</span></a>
@@ -67,7 +68,7 @@ const nav = [
         </nav>
       </div>
     </header>
-    <main class="wrap">
+    <main class="wrap" id="main">
       <slot />
     </main>
     <footer class="site">
