@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="DejaVu Sans, Verdana, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">Port forward versus Tailscale and Cloudflare Tunnel</title>
+  <desc id="d">With a port forward, anyone on the internet, including scanners, reaches the home server through an open router port. With Tailscale or a Cloudflare Tunnel, the router stays closed: the server and your devices only make outgoing connections.</desc>
+  <rect width="760" height="330" rx="14" fill="#ffffff"/>
+  <defs>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#0b6e4f"/></marker>
+    <marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#b3261e"/></marker>
+  </defs>
+  <line x1="380" y1="20" x2="380" y2="310" stroke="#e6e2da" stroke-width="2"/>
+  <g text-anchor="middle">
+    <text x="190" y="40" font-size="16" font-weight="bold" fill="#b3261e">Port forward</text>
+    <text x="570" y="40" font-size="16" font-weight="bold" fill="#0b6e4f">Tailscale / Cloudflare Tunnel</text>
+
+    <rect x="30" y="70" width="130" height="50" rx="10" fill="#fdecea" stroke="#b3261e"/>
+    <text x="95" y="92" font-size="13" fill="#1d1d1f">You</text>
+    <text x="95" y="110" font-size="11" fill="#5f6368">+ every scanner</text>
+    <rect x="215" y="140" width="130" height="50" rx="10" fill="#fdecea" stroke="#b3261e"/>
+    <text x="280" y="162" font-size="13" fill="#1d1d1f">Router</text>
+    <text x="280" y="180" font-size="11" fill="#b3261e">port open</text>
+    <rect x="30" y="230" width="130" height="50" rx="10" fill="#f3f1ec" stroke="#cfc9bd"/>
+    <text x="95" y="252" font-size="13" fill="#1d1d1f">Home server</text>
+    <text x="95" y="270" font-size="11" fill="#5f6368">home IP public</text>
+
+    <rect x="410" y="70" width="140" height="50" rx="10" fill="#e3f2ec" stroke="#0b6e4f"/>
+    <text x="480" y="92" font-size="13" fill="#1d1d1f">Your phone</text>
+    <text x="480" y="110" font-size="11" fill="#5f6368">or a visitor</text>
+    <rect x="600" y="70" width="140" height="50" rx="10" fill="#e3f2ec" stroke="#0b6e4f"/>
+    <text x="670" y="92" font-size="13" fill="#1d1d1f">Tailscale /</text>
+    <text x="670" y="110" font-size="13" fill="#1d1d1f">Cloudflare</text>
+    <rect x="600" y="140" width="140" height="50" rx="10" fill="#f3f1ec" stroke="#cfc9bd"/>
+    <text x="670" y="162" font-size="13" fill="#1d1d1f">Router</text>
+    <text x="670" y="180" font-size="11" fill="#0b6e4f">nothing open</text>
+    <rect x="600" y="230" width="140" height="50" rx="10" fill="#f3f1ec" stroke="#cfc9bd"/>
+    <text x="670" y="252" font-size="13" fill="#1d1d1f">Home server</text>
+    <text x="670" y="270" font-size="11" fill="#5f6368">IP stays hidden</text>
+  </g>
+  <g stroke-width="2.2" fill="none">
+    <path d="M160 100 C 200 105, 230 115, 260 137" stroke="#b3261e" marker-end="url(#r)"/>
+    <path d="M250 190 C 220 215, 190 235, 164 248" stroke="#b3261e" marker-end="url(#r)"/>
+    <path d="M550 95 H596" stroke="#0b6e4f" marker-end="url(#g)"/>
+    <path d="M745 255 C 760 200, 760 150, 744 112" stroke="#0b6e4f" marker-end="url(#g)"/>
+  </g>
+  <g font-size="11" fill="#5f6368" text-anchor="middle">
+    <text x="190" y="304">incoming connections reach the server</text>
+    <text x="570" y="304">only outgoing connections, nothing listens publicly</text>
+  </g>
+</svg>

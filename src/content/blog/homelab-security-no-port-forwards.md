@@ -18,6 +18,8 @@ My rule: **nothing on my server is reachable from the internet.** I still use ev
 
 ## Remote access: Tailscale
 
+[![Left: with a port forward, anyone on the internet reaches the home server through an open router port. Right: with Tailscale or a Cloudflare Tunnel the router stays closed and only outgoing connections are made](/images/posts/no-port-forwards.svg)](/images/posts/no-port-forwards.svg)
+
 [Tailscale](https://tailscale.com) builds a private, encrypted network between your own devices. Install it on the server and on your phone, log in with the same account, and the phone can reach the server as if it were at home, with **no ports opened** on the router. Connections go *out* from both devices, so nothing listens on your public IP.
 
 For a homelab that's 90 % of what people use port forwards for, solved.
