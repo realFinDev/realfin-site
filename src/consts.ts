@@ -45,6 +45,7 @@ export const SERIES: Record<string, { title: string; posts: string[] }> = {
       'valheim-mods-client-vs-server',
       'valheim-crops-not-growing-empty-server',
       'valheim-chests-destroyed-find-when-in-backups',
+      'valheim-craft-from-containers-duplication-bug',
     ],
   },
   'homelab-dns': {
