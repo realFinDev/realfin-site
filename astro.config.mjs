@@ -43,7 +43,7 @@ export default defineConfig({
   prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/admin/') && !isEmptyCategory(page),
+      filter: (page) => !page.includes('/admin/') && !page.endsWith('/search/') && !isEmptyCategory(page),
       serialize: (item) => (lastmod.has(item.url) ? { ...item, lastmod: lastmod.get(item.url) } : item),
     }),
   ],
