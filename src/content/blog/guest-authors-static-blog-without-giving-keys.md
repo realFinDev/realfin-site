@@ -32,6 +32,8 @@ The editor is [Decap CMS](https://decapcms.org) in **open authoring** mode:
 
 They never have write access to my repository. They can't merge anything. The worst they can do is send me a bad suggestion.
 
+[![A guest signs in with GitHub, drafts are saved in their own fork, the post is submitted as a pull request, an automatic check blocks anything outside posts and images, and the editor reviews and merges it](/images/posts/guest-post-flow.svg)](/images/posts/guest-post-flow.svg)
+
 The GitHub login runs as two tiny Cloudflare Pages Functions (no server of mine involved). They're CSRF-protected with a one-time `state` cookie, cap the requested permissions to `public_repo` (never access to a guest's private repos), and only hand the token back to my own site's origin.
 
 ## An automatic check on every submission
