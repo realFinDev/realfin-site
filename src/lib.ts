@@ -1,8 +1,22 @@
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 
 export async function getPosts() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
   return posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+}
+
+export async function getAuthors() {
+  return getCollection('authors');
+}
+
+export async function authorOf(post: CollectionEntry<'blog'>) {
+  const author = await getEntry(post.data.author);
+  if (!author) throw new Error(`Unknown author "${post.data.author.id}" in post ${post.id}`);
+  return author;
+}
+
+export function avatarOf(author: CollectionEntry<'authors'>) {
+  return author.data.avatar ?? '/images/authors/default.svg';
 }
 
 export function formatDate(d: Date) {

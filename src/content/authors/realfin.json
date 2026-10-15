@@ -1,0 +1,8 @@
+{
+  "name": "RealFin",
+  "bio": "Runs a homelab with about thirty Docker containers, hosts game servers for friends, and is building a Roblox game with AI. Editor of this site.",
+  "avatar": "/images/authors/realfin.svg",
+  "role": "editor",
+  "links": { "github": "realFinDev" },
+  "joined": "2026-10-15"
+}

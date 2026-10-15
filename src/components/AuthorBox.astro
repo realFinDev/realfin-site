@@ -1,0 +1,22 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { avatarOf } from '../lib';
+interface Props { author: CollectionEntry<'authors'> }
+const { author } = Astro.props;
+const { name, bio, role, links } = author.data;
+---
+<aside class="author-box">
+  <img src={avatarOf(author)} alt="" width="56" height="56" loading="lazy" />
+  <div>
+    <div class="meta">Written by</div>
+    <a class="author-name" href={`/authors/${author.id}/`}>{name}</a>{role === 'editor' && <span class="pill" style="margin-left:8px">Editor</span>}
+    <p>{bio}</p>
+    {(links.website || links.github) && (
+      <p class="meta">
+        {links.website && <a href={links.website} rel="noopener ugc">Website</a>}
+        {links.website && links.github && ' · '}
+        {links.github && <a href={`https://github.com/${links.github}`} rel="noopener ugc">GitHub</a>}
+      </p>
+    )}
+  </div>
+</aside>

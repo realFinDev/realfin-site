@@ -71,3 +71,9 @@ p.lede { font-size: 1.12rem; color: var(--muted); margin-top: 0; }
 footer.site { border-top: 1px solid var(--border); color: var(--muted); font-size: 0.9rem; padding: 24px 0 40px; }
 footer.site nav { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-bottom: 8px; }
 footer.site a { color: var(--muted); }
+.author-box { display: flex; gap: 14px; align-items: flex-start; margin: 36px 0 8px; padding: 16px 18px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; }
+.author-box img, .author-card img { border-radius: 50%; flex: none; }
+.author-box p { margin: 6px 0 0; color: var(--muted); font-size: 0.95rem; }
+.author-name { font-weight: 700; color: var(--text); text-decoration: none; }
+.author-card { display: flex; gap: 14px; align-items: flex-start; }
+.author-card h3 { margin-top: 0; }

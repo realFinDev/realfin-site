@@ -2,10 +2,10 @@
 import { ADSENSE_CLIENT } from '../consts';
 // Manual ad unit. Renders nothing until ADSENSE_CLIENT is set.
 // Auto ads (configured in the AdSense dashboard) also work without this component.
-interface Props { slot?: string }
-const { slot = '' } = Astro.props;
+interface Props { slot?: string; ads?: boolean }
+const { slot = '', ads = true } = Astro.props;
 ---
-{ADSENSE_CLIENT && slot && (
+{ADSENSE_CLIENT && ads && slot && (
   <div class="ad-slot">
     <ins class="adsbygoogle" style="display:block" data-ad-client={ADSENSE_CLIENT} data-ad-slot={slot} data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script is:inline>(window.adsbygoogle = window.adsbygoogle || []).push({});</script>

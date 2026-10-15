@@ -4,8 +4,9 @@ import Base from '../../layouts/Base.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import Comments from '../../components/Comments.astro';
 import PostCard from '../../components/PostCard.astro';
-import { CATEGORIES, AUTHOR } from '../../consts';
-import { getPosts, formatDate, readingTime } from '../../lib';
+import AuthorBox from '../../components/AuthorBox.astro';
+import { CATEGORIES } from '../../consts';
+import { getPosts, formatDate, readingTime, authorOf } from '../../lib';
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -13,6 +14,8 @@ export async function getStaticPaths() {
 }
 const { post, posts } = Astro.props;
 const { Content } = await render(post);
+const author = await authorOf(post);
+const ads = post.data.ads;
 const cat = CATEGORIES[post.data.category];
 const related = posts.filter((p) => p.data.category === post.data.category && p.id !== post.id).slice(0, 3);
 const jsonLd = {
@@ -22,22 +25,24 @@ const jsonLd = {
   description: post.data.description,
   datePublished: post.data.pubDate.toISOString(),
   dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
-  author: { '@type': 'Person', name: AUTHOR },
+  author: { '@type': 'Person', name: author.data.name, url: new URL(`/authors/${author.id}/`, Astro.site).href },
 };
 ---
-<Base title={post.data.title} description={post.data.description} type="article">
+<Base title={post.data.title} description={post.data.description} type="article" ads={ads} author={author.id}>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <article>
     <a class="pill" href={`/category/${post.data.category}/`}>{cat.label}</a>
     <h1 style="margin-top:10px">{post.data.title}</h1>
     <p class="meta">
+      by <a href={`/authors/${author.id}/`}>{author.data.name}</a> ·
       {formatDate(post.data.pubDate)}
       {post.data.updatedDate && <> · updated {formatDate(post.data.updatedDate)}</>}
       · {readingTime(post.body)} min read
     </p>
-    <AdSlot />
+    <AdSlot ads={ads} />
     <div class="prose"><Content /></div>
-    <AdSlot />
+    <AdSlot ads={ads} />
+    <AuthorBox author={author} />
   </article>
   {related.length > 0 && (
     <section>

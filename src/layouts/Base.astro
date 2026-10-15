@@ -6,8 +6,13 @@ interface Props {
   title?: string;
   description?: string;
   type?: 'website' | 'article';
+  /** false = don't load the AdSense script on this page at all */
+  ads?: boolean;
+  /** author id, exposed for later per-author ad revenue attribution */
+  author?: string;
 }
-const { title, description = SITE_DESCRIPTION, type = 'website' } = Astro.props;
+const { title, description = SITE_DESCRIPTION, type = 'website', ads = true, author } = Astro.props;
+const loadAds = Boolean(ADSENSE_CLIENT) && ads;
 const fullTitle = title ? `${title} · ${SITE_TITLE}` : `${SITE_TITLE}: homelab, game servers & Roblox dev`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const path = Astro.url.pathname;
@@ -15,6 +20,7 @@ const nav = [
   { href: '/', label: 'Home' },
   { href: '/blog/', label: 'Blog' },
   { href: '/homelab/', label: 'My homelab' },
+  { href: '/authors/', label: 'Authors' },
   { href: '/about/', label: 'About' },
 ];
 ---
@@ -34,11 +40,12 @@ const nav = [
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary" />
-    {ADSENSE_CLIENT && (
+    {author && <meta name="author" content={author} />}
+    {loadAds && (
       <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`} crossorigin="anonymous"></script>
     )}
   </head>
-  <body>
+  <body data-author={author}>
     <header class="site">
       <div class="wrap">
         <a class="brand" href="/">Real<span>Fin</span></a>
