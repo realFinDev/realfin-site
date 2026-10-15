@@ -1,5 +1,6 @@
 ---
 import { render } from 'astro:content';
+import fs from 'node:fs';
 import Base from '../../layouts/Base.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import Comments from '../../components/Comments.astro';
@@ -17,6 +18,7 @@ const { post, posts } = Astro.props;
 const { Content, headings } = await render(post);
 const author = await authorOf(post);
 const ads = post.data.ads;
+const image = fs.existsSync(`public/og/${post.id}.png`) ? `/og/${post.id}.png` : '/og/default.png';
 const cat = CATEGORIES[post.data.category];
 const related = posts.filter((p) => p.data.category === post.data.category && p.id !== post.id).slice(0, 3);
 const jsonLd = {
@@ -27,9 +29,10 @@ const jsonLd = {
   datePublished: post.data.pubDate.toISOString(),
   dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
   author: { '@type': 'Person', name: author.data.name, url: new URL(`/authors/${author.id}/`, Astro.site).href },
+  image: new URL(image, Astro.site).href,
 };
 ---
-<Base title={post.data.title} description={post.data.description} type="article" ads={ads} author={author.id}>
+<Base title={post.data.title} description={post.data.description} type="article" ads={ads} author={author.id} image={image}>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <article data-pagefind-body>
     <a class="pill" href={`/category/${post.data.category}/`} data-pagefind-ignore>{cat.label}</a>

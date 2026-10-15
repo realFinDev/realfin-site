@@ -10,8 +10,11 @@ interface Props {
   ads?: boolean;
   /** author id, exposed for later per-author ad revenue attribution */
   author?: string;
+  /** social preview image path under /public */
+  image?: string;
 }
-const { title, description = SITE_DESCRIPTION, type = 'website', ads = true, author } = Astro.props;
+const { title, description = SITE_DESCRIPTION, type = 'website', ads = true, author, image = '/og/default.png' } = Astro.props;
+const imageUrl = new URL(image, Astro.site);
 const loadAds = Boolean(ADSENSE_CLIENT) && ads;
 const fullTitle = title ? `${title} · ${SITE_TITLE}` : `${SITE_TITLE}: homelab, game servers & Roblox dev`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -41,7 +44,12 @@ const nav = [
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="RealFin" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={imageUrl} />
     {author && <meta name="author" content={author} />}
     {loadAds && (
       <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`} crossorigin="anonymous"></script>
