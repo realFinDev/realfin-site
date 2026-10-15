@@ -8,7 +8,7 @@ tags: [docker, monitoring, checklist, maintenance]
 
 Dashboards are great, but they show what you configured them to show. Every now and then I run a manual check that looks for the things *nobody* is watching. The first time I did this properly, it found three real problems on a server I thought was fine.
 
-Here's the checklist, in the order I run it. The read-only checks are also bundled into one script you can [read](/downloads/homelab-healthcheck.sh) and run with `bash homelab-healthcheck.sh` (it changes nothing).
+Here's the checklist, in the order I run it. The read-only checks are also bundled into one script: [read it on GitHub](https://github.com/realFinDev/realfin-site/blob/main/public/downloads/homelab-healthcheck.sh) first (always do that with scripts from the internet), then [download it](/downloads/homelab-healthcheck.sh) and run `bash homelab-healthcheck.sh`. It changes nothing.
 
 ## 1. Containers that are quietly crash-looping
 
