@@ -5,6 +5,7 @@ import AdSlot from '../../components/AdSlot.astro';
 import Comments from '../../components/Comments.astro';
 import PostCard from '../../components/PostCard.astro';
 import AuthorBox from '../../components/AuthorBox.astro';
+import Toc from '../../components/Toc.astro';
 import { CATEGORIES } from '../../consts';
 import { getPosts, formatDate, readingTime, authorOf } from '../../lib';
 
@@ -13,7 +14,7 @@ export async function getStaticPaths() {
   return posts.map((post) => ({ params: { slug: post.id }, props: { post, posts } }));
 }
 const { post, posts } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 const author = await authorOf(post);
 const ads = post.data.ads;
 const cat = CATEGORIES[post.data.category];
@@ -39,6 +40,7 @@ const jsonLd = {
       {post.data.updatedDate && <> · updated {formatDate(post.data.updatedDate)}</>}
       · {readingTime(post.body)} min read
     </p>
+    <Toc headings={headings} />
     <AdSlot ads={ads} />
     <div class="prose"><Content /></div>
     <AdSlot ads={ads} />
