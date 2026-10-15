@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import PostCard from '../components/PostCard.astro';
 import { CATEGORIES, GUEST_AUTHORING } from '../consts';
 import { getPosts } from '../lib';
+import { TOOLS } from '../tools';
 const posts = await getPosts();
 const latest = posts.slice(0, 6);
 const activeCats = Object.entries(CATEGORIES).filter(([key]) => posts.some((p) => p.data.category === key));
@@ -45,18 +46,12 @@ const startHere = ['homelab-tour-30-containers', 'homelab-security-no-port-forwa
   <section>
     <h2>Free tools</h2>
     <div class="cats">
-      <a class="card" href="/tools/valheim-server-modifiers/" style="text-decoration:none">
-        <h3 style="margin-top:0;color:var(--text)">Valheim modifier generator</h3>
-        <p>World settings → exact dedicated-server arguments.</p>
-      </a>
-      <a class="card" href="/tools/dns-checker/" style="text-decoration:none">
-        <h3 style="margin-top:0;color:var(--text)">DNS record checker</h3>
-        <p>Records and TTLs on Cloudflare and Google DNS, side by side.</p>
-      </a>
-      <a class="card" href="/tools/compose-port-checker/" style="text-decoration:none">
-        <h3 style="margin-top:0;color:var(--text)">Compose port checker</h3>
-        <p>Find port conflicts and services open to your whole network.</p>
-      </a>
+      {TOOLS.map((t) => (
+        <a class="card" href={t.href} style="text-decoration:none">
+          <h3 style="margin-top:0;color:var(--text)">{t.title}</h3>
+          <p>{t.short}</p>
+        </a>
+      ))}
     </div>
   </section>
 

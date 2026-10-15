@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 const types = ['A', 'AAAA', 'CNAME', 'MX', 'TXT', 'NS', 'CAA'];
 ---
 <Base title="DNS record checker" description="Check a domain's DNS records on Cloudflare and Google public DNS at once, with TTLs, and see how long a 'doesn't exist' answer stays cached.">
-  <div class="prose">
+  <div class="prose" data-pagefind-body>
     <h1>DNS record checker</h1>
     <p class="lede">Look up a DNS record on <strong>Cloudflare</strong> and <strong>Google</strong> public DNS side by side. If a name doesn't exist (yet), it also tells you how long resolvers will remember that, which is why a brand-new subdomain can stay "not found" for a while.</p>
     <p class="meta">Your browser asks cloudflare-dns.com and dns.google directly (DNS-over-HTTPS). Nothing goes through realfin.dev.</p>

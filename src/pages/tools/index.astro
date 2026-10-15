@@ -1,11 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-const tools = [
-  { href: '/tools/valheim-server-modifiers/', title: 'Valheim world modifier generator', text: 'Pick combat, death penalty, resources, raids and portals, and get the exact -modifier server arguments and Docker env line.' },
-  { href: '/tools/valheim-whitelist/', title: 'Valheim whitelist builder', text: 'Paste Steam profile links, IDs or server log lines and get a clean, commented permittedlist.txt or adminlist.txt.' },
-  { href: '/tools/dns-checker/', title: 'DNS record checker', text: 'Look up records on Cloudflare and Google DNS side by side, with TTLs and how long a "doesn\'t exist" answer stays cached.' },
-  { href: '/tools/compose-port-checker/', title: 'Docker Compose port checker', text: 'Paste your compose files and find duplicate host ports, plus services exposed to your whole network that probably shouldn\'t be.' },
-];
+import { TOOLS as tools } from '../../tools';
 ---
 <Base title="Tools" description="Small free tools for homelab and game server admins: Valheim server arguments, DNS record checker, Docker Compose port checker. They run in your browser.">
   <h1>Tools</h1>
