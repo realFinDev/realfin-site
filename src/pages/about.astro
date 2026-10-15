@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { TOOLS } from '../tools';
 import { GUEST_AUTHORING } from '../consts';
 ---
 <Base title="About" description="Who writes RealFin and why.">
@@ -13,7 +14,7 @@ import { GUEST_AUTHORING } from '../consts';
     <ul>
       <li><a href="/homelab/">My homelab</a>: the hardware and every service on it.</li>
       <li>Series: <a href="/blog/valheim-dedicated-server-docker/">Running a Valheim server for friends</a>, <a href="/blog/adguard-unbound-network-adblock/">Home DNS</a>, <a href="/blog/homelab-health-check-checklist/">Keeping a homelab healthy</a>.</li>
-      <li><a href="/tools/">Free tools</a>: Valheim modifier generator, DNS record checker, Docker Compose port checker.</li>
+      <li><a href="/tools/">{TOOLS.length} free tools</a>: {TOOLS.map((t) => t.title).join(', ')}.</li>
       <li><a href="/blog/building-this-blog-astro-cloudflare-pages/">How this site is built</a>.</li>
     </ul>
 
