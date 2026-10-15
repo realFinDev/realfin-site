@@ -1,0 +1,106 @@
+---
+import Base from '../../layouts/Base.astro';
+
+// Values accepted by Valheim's dedicated server for -modifier <key> <value>, -preset and -setkey.
+const modifiers = [
+  { key: 'combat', label: 'Combat', values: ['veryeasy', 'easy', 'hard', 'veryhard'] },
+  { key: 'deathpenalty', label: 'Death penalty', values: ['casual', 'veryeasy', 'easy', 'hard', 'hardcore'] },
+  { key: 'resources', label: 'Resource rate', values: ['muchless', 'less', 'more', 'muchmore', 'most'] },
+  { key: 'raids', label: 'Raids', values: ['none', 'muchless', 'less', 'more', 'muchmore'] },
+  { key: 'portals', label: 'Portals', values: ['casual', 'hard', 'veryhard'] },
+];
+const presets = ['casual', 'easy', 'normal', 'hard', 'hardcore', 'immersive', 'hammer'];
+const keys = [
+  { key: 'nomap', label: 'No map (no map or minimap)' },
+  { key: 'playerevents', label: 'Player-based raids (raids follow each player\'s own progress)' },
+  { key: 'passivemobs', label: 'Passive enemies (enemies don\'t attack first)' },
+  { key: 'nobuildcost', label: 'No build cost' },
+];
+const pretty: Record<string, string> = {
+  veryeasy: 'Very easy', easy: 'Easy', hard: 'Hard', veryhard: 'Very hard', casual: 'Casual', hardcore: 'Hardcore',
+  muchless: 'Much less (×0.5)', less: 'Less (×0.75)', more: 'More (×1.5)', muchmore: 'Much more (×2)', most: 'Most (×3)', none: 'None',
+};
+---
+<Base title="Valheim world modifier generator" description="Generate the -modifier, -preset and -setkey arguments for a Valheim dedicated server, plus a ready-to-paste Docker SERVER_ARGS line.">
+  <div class="prose">
+    <h1>Valheim world modifier generator</h1>
+    <p class="lede">The world settings from Valheim's "Customize" screen, turned into dedicated-server arguments. Pick your settings and copy the result.</p>
+  </div>
+
+  <form id="vm" class="tool">
+    <fieldset>
+      <legend>Start from a preset (optional)</legend>
+      <select name="preset">
+        <option value="">None (normal, then my changes below)</option>
+        {presets.map((p) => <option value={p}>{p[0].toUpperCase() + p.slice(1)}</option>)}
+      </select>
+    </fieldset>
+
+    <fieldset>
+      <legend>Modifiers</legend>
+      {modifiers.map((m) => (
+        <label class="row">
+          <span>{m.label}</span>
+          <select name={m.key}>
+            <option value="">Normal (default)</option>
+            {m.values.map((v) => <option value={v}>{pretty[v] ?? v}</option>)}
+          </select>
+        </label>
+      ))}
+    </fieldset>
+
+    <fieldset>
+      <legend>Extra rules</legend>
+      {keys.map((k) => (
+        <label class="check"><input type="checkbox" name="setkey" value={k.key} /> {k.label}</label>
+      ))}
+    </fieldset>
+  </form>
+
+  <h2>Server arguments</h2>
+  <pre class="out"><code id="args">(defaults: nothing to add)</code></pre>
+  <button type="button" class="copy" data-target="args">Copy</button>
+
+  <h2>Docker (lloesche/valheim-server)</h2>
+  <pre class="out"><code id="env"></code></pre>
+  <button type="button" class="copy" data-target="env">Copy</button>
+
+  <div class="prose">
+    <h2>Notes</h2>
+    <ul>
+      <li>Only add what differs from <em>Normal</em>. An empty result means a default world.</li>
+      <li>A preset sets everything at once. Modifiers you pick below are passed after it, so they adjust that part of the preset.</li>
+      <li>The server applies these on start. The log confirms each one, e.g. <code>Setting world modifier: raids-&gt;none</code>.</li>
+      <li>An existing world keeps the settings it was created with, plus whatever the server passes on top.</li>
+      <li>Full server setup: <a href="/blog/valheim-dedicated-server-docker/">Hosting a Valheim dedicated server with Docker</a>.</li>
+    </ul>
+  </div>
+
+  <script is:inline>
+    (function () {
+      var form = document.getElementById('vm');
+      var el = form.elements;
+      function update() {
+        var parts = [];
+        var preset = el.namedItem('preset').value;
+        if (preset) parts.push('-preset ' + preset);
+        ['combat', 'deathpenalty', 'resources', 'raids', 'portals'].forEach(function (k) {
+          var v = el.namedItem(k).value;
+          if (v) parts.push('-modifier ' + k + ' ' + v);
+        });
+        form.querySelectorAll('input[name=setkey]:checked').forEach(function (c) { parts.push('-setkey ' + c.value); });
+        var args = parts.join(' ');
+        document.getElementById('args').textContent = args || '(defaults: nothing to add)';
+        document.getElementById('env').textContent = args ? '- SERVER_ARGS=' + args : '# defaults: no SERVER_ARGS needed';
+      }
+      form.addEventListener('change', update);
+      document.querySelectorAll('.copy').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var t = document.getElementById(b.dataset.target).textContent;
+          navigator.clipboard && navigator.clipboard.writeText(t).then(function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1200); });
+        });
+      });
+      update();
+    })();
+  </script>
+</Base>

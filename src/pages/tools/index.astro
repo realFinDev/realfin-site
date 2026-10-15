@@ -1,0 +1,16 @@
+---
+import Base from '../../layouts/Base.astro';
+const tools = [
+  { href: '/tools/valheim-server-modifiers/', title: 'Valheim world modifier generator', text: 'Pick combat, death penalty, resources, raids and portals, and get the exact -modifier server arguments and Docker env line.' },
+  { href: '/tools/compose-port-checker/', title: 'Docker Compose port checker', text: 'Paste your compose files and find duplicate host ports, plus services exposed to your whole network that probably shouldn\'t be.' },
+];
+---
+<Base title="Tools" description="Small free tools for homelab and game server admins. Everything runs in your browser; nothing you paste is uploaded.">
+  <h1>Tools</h1>
+  <p class="lede">Small helpers I wanted for my own homelab. They run entirely in your browser, and nothing you paste is sent anywhere.</p>
+  <ul class="cards">
+    {tools.map((t) => (
+      <li class="card"><h3><a href={t.href}>{t.title}</a></h3><p>{t.text}</p></li>
+    ))}
+  </ul>
+</Base>
