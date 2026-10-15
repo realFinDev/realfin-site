@@ -23,6 +23,8 @@ Two things about Valheim's networking:
 
 Better hardware can't fix #1, because it's a software limit.
 
+[![The first player to arrive in an area simulates it and sends its updates through the server to everyone else; a weak connection there means lag for all, and the server's own per-player send cap adds to it](/images/posts/valheim-area-owner.svg)](/images/posts/valheim-area-owner.svg)
+
 ## Better Networking
 
 [Better Networking](https://thunderstore.io/c/valheim/p/CW_Jesse/BetterNetworking_Valheim/) is a BepInEx mod that:
