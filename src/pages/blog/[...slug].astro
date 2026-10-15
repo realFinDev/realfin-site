@@ -1,0 +1,49 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import Comments from '../../components/Comments.astro';
+import PostCard from '../../components/PostCard.astro';
+import { CATEGORIES, AUTHOR } from '../../consts';
+import { getPosts, formatDate, readingTime } from '../../lib';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post, posts } }));
+}
+const { post, posts } = Astro.props;
+const { Content } = await render(post);
+const cat = CATEGORIES[post.data.category];
+const related = posts.filter((p) => p.data.category === post.data.category && p.id !== post.id).slice(0, 3);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.pubDate.toISOString(),
+  dateModified: (post.data.updatedDate ?? post.data.pubDate).toISOString(),
+  author: { '@type': 'Person', name: AUTHOR },
+};
+---
+<Base title={post.data.title} description={post.data.description} type="article">
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <article>
+    <a class="pill" href={`/category/${post.data.category}/`}>{cat.label}</a>
+    <h1 style="margin-top:10px">{post.data.title}</h1>
+    <p class="meta">
+      {formatDate(post.data.pubDate)}
+      {post.data.updatedDate && <> · updated {formatDate(post.data.updatedDate)}</>}
+      · {readingTime(post.body)} min read
+    </p>
+    <AdSlot />
+    <div class="prose"><Content /></div>
+    <AdSlot />
+  </article>
+  {related.length > 0 && (
+    <section>
+      <h2>More in {cat.label}</h2>
+      <ul class="cards">{related.map((p) => <PostCard post={p} />)}</ul>
+    </section>
+  )}
+  <Comments />
+</Base>

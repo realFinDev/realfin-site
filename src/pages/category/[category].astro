@@ -1,0 +1,20 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostCard from '../../components/PostCard.astro';
+import { CATEGORIES, type Category } from '../../consts';
+import { getPosts } from '../../lib';
+
+export function getStaticPaths() {
+  return Object.keys(CATEGORIES).map((category) => ({ params: { category } }));
+}
+const category = Astro.params.category as Category;
+const c = CATEGORIES[category];
+const posts = (await getPosts()).filter((p) => p.data.category === category);
+---
+<Base title={c.label} description={c.blurb}>
+  <h1>{c.label}</h1>
+  <p class="lede">{c.blurb}</p>
+  {posts.length > 0
+    ? <ul class="cards">{posts.map((post) => <PostCard post={post} />)}</ul>
+    : <p>First posts are on the way.</p>}
+</Base>

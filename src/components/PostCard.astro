@@ -1,0 +1,14 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { CATEGORIES } from '../consts';
+import { formatDate } from '../lib';
+interface Props { post: CollectionEntry<'blog'> }
+const { post } = Astro.props;
+const cat = CATEGORIES[post.data.category];
+---
+<li class="card">
+  <a class="pill" href={`/category/${post.data.category}/`}>{cat.label}</a>
+  <h3><a href={`/blog/${post.id}/`}>{post.data.title}</a></h3>
+  <p>{post.data.description}</p>
+  <div class="meta">{formatDate(post.data.pubDate)}</div>
+</li>

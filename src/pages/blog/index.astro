@@ -1,0 +1,13 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getPosts } from '../../lib';
+const posts = await getPosts();
+---
+<Base title="Blog" description="Every post: homelab guides, game server write-ups and Roblox dev notes.">
+  <h1>Blog</h1>
+  <p class="lede">{posts.length} posts about homelab, game servers and Roblox development.</p>
+  <ul class="cards">
+    {posts.map((post) => <PostCard post={post} />)}
+  </ul>
+</Base>

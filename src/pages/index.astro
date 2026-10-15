@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import PostCard from '../components/PostCard.astro';
+import { CATEGORIES } from '../consts';
+import { getPosts } from '../lib';
+const posts = await getPosts();
+const latest = posts.slice(0, 6);
+---
+<Base>
+  <h1>A real homelab, written down.</h1>
+  <p class="lede">
+    I run a home server with about thirty Docker containers: media, smart home, DNS, a local AI and game servers for my friends.
+    This site is where I write up how it all works, what broke and how I fixed it. Lately I'm also building a Roblox game with AI as my coding partner.
+  </p>
+  <div class="cats">
+    {Object.entries(CATEGORIES).map(([key, c]) => (
+      <a class="card" href={`/category/${key}/`} style="text-decoration:none">
+        <h3 style="margin-top:0;color:var(--text)">{c.label}</h3>
+        <p>{c.blurb}</p>
+      </a>
+    ))}
+  </div>
+  <h2>Latest posts</h2>
+  <ul class="cards">
+    {latest.map((post) => <PostCard post={post} />)}
+  </ul>
+  <p><a href="/blog/">All posts →</a></p>
+</Base>
