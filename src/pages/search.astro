@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Search" description="Search all RealFin posts.">
+  <h1>Search</h1>
+  <link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+  <div id="search"></div>
+  <noscript><p>Search needs JavaScript. You can also browse <a href="/blog/">all posts</a>.</p></noscript>
+  <script is:inline src="/pagefind/pagefind-ui.js"></script>
+  <script is:inline>
+    window.addEventListener('DOMContentLoaded', function () {
+      var ui = new PagefindUI({ element: '#search', showSubResults: true, showImages: false, resetStyles: false });
+      var q = new URLSearchParams(location.search).get('q');
+      if (q) ui.triggerSearch(q);
+    });
+  </script>
+</Base>
+<style is:global>
+  #search { --pagefind-ui-primary: var(--accent); --pagefind-ui-text: var(--text); --pagefind-ui-background: var(--surface); --pagefind-ui-border: var(--border); --pagefind-ui-tag: var(--accent-soft); --pagefind-ui-font: inherit; margin-top: 18px; }
+</style>

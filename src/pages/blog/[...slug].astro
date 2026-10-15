@@ -30,10 +30,10 @@ const jsonLd = {
 ---
 <Base title={post.data.title} description={post.data.description} type="article" ads={ads} author={author.id}>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-  <article>
-    <a class="pill" href={`/category/${post.data.category}/`}>{cat.label}</a>
+  <article data-pagefind-body>
+    <a class="pill" href={`/category/${post.data.category}/`} data-pagefind-ignore>{cat.label}</a>
     <h1 style="margin-top:10px">{post.data.title}</h1>
-    <p class="meta">
+    <p class="meta" data-pagefind-ignore>
       by <a href={`/authors/${author.id}/`}>{author.data.name}</a> ·
       {formatDate(post.data.pubDate)}
       {post.data.updatedDate && <> · updated {formatDate(post.data.updatedDate)}</>}
