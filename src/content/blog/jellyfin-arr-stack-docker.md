@@ -20,6 +20,8 @@ Jellyseerr  →  Radarr (movies) / Sonarr (TV)  →  Prowlarr (indexers)
                       Bazarr (subtitles)
 ```
 
+[![Jellyseerr sends requests to Radarr and Sonarr, which search Prowlarr's indexers and send downloads to qBittorrent; finished files are hardlinked into the library that Jellyfin plays, and Bazarr adds subtitles](/images/posts/arr-stack.svg)](/images/posts/arr-stack.svg)
+
 | App | Job |
 |---|---|
 | **Jellyseerr** | Request page for the household. Talks to the Radarr, Sonarr and Jellyfin APIs only, so it needs no media mounts. |

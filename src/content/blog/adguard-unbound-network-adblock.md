@@ -17,6 +17,8 @@ device → AdGuard Home (filters ads) → Unbound (recursive resolver) → root 
 - **AdGuard Home**: blocklists, a query log, per-client stats and DNS rewrites for local names.
 - **Unbound**: looks up each domain step by step itself and caches the answers.
 
+[![Devices ask AdGuard Home, which blocks ads and forwards the rest to Unbound; Unbound asks the root, TLD and authoritative servers itself](/images/posts/dns-chain.svg)](/images/posts/dns-chain.svg)
+
 ## Compose file
 
 ```yaml

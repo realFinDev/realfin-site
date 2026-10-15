@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 330" font-family="DejaVu Sans, Verdana, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">How the Jellyfin and *arr media stack fits together</title>
+  <desc id="d">A request in Jellyseerr goes to Radarr or Sonarr. They search indexers managed by Prowlarr and send downloads to qBittorrent. Finished downloads are hardlinked into the library, which Jellyfin plays. Bazarr adds subtitles.</desc>
+  <rect width="760" height="330" rx="14" fill="#ffffff"/>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#0b6e4f"/></marker>
+  </defs>
+  <g font-size="14" text-anchor="middle">
+    <rect x="24" y="40" width="150" height="62" rx="10" fill="#f3f1ec" stroke="#cfc9bd"/>
+    <text x="99" y="68" font-weight="bold" fill="#1d1d1f">Jellyseerr</text>
+    <text x="99" y="88" font-size="12" fill="#5f6368">requests</text>
+
+    <rect x="226" y="40" width="170" height="62" rx="10" fill="#e3f2ec" stroke="#0b6e4f"/>
+    <text x="311" y="68" font-weight="bold" fill="#1d1d1f">Radarr / Sonarr</text>
+    <text x="311" y="88" font-size="12" fill="#5f6368">movies / TV</text>
+
+    <rect x="450" y="40" width="150" height="62" rx="10" fill="#f3f1ec" stroke="#cfc9bd"/>
+    <text x="525" y="68" font-weight="bold" fill="#1d1d1f">Prowlarr</text>
+    <text x="525" y="88" font-size="12" fill="#5f6368">indexers</text>
+
+    <rect x="634" y="40" width="104" height="62" rx="10" fill="#f3f1ec" stroke="#cfc9bd" stroke-dasharray="4 3"/>
+    <text x="686" y="68" font-size="12" fill="#1d1d1f">FlareSolverr</text>
+    <text x="686" y="86" font-size="11" fill="#5f6368">Cloudflare</text>
+
+    <rect x="226" y="150" width="170" height="62" rx="10" fill="#e3f2ec" stroke="#0b6e4f"/>
+    <text x="311" y="178" font-weight="bold" fill="#1d1d1f">qBittorrent</text>
+    <text x="311" y="198" font-size="12" fill="#5f6368">→ /downloads</text>
+
+    <rect x="450" y="150" width="150" height="62" rx="10" fill="#f3f1ec" stroke="#cfc9bd"/>
+    <text x="525" y="178" font-weight="bold" fill="#1d1d1f">Library</text>
+    <text x="525" y="198" font-size="12" fill="#5f6368">/movies, /tv</text>
+
+    <rect x="450" y="250" width="150" height="56" rx="10" fill="#e3f2ec" stroke="#0b6e4f"/>
+    <text x="525" y="283" font-weight="bold" fill="#1d1d1f">Jellyfin</text>
+
+    <rect x="634" y="150" width="104" height="62" rx="10" fill="#f3f1ec" stroke="#cfc9bd"/>
+    <text x="686" y="178" font-weight="bold" fill="#1d1d1f">Bazarr</text>
+    <text x="686" y="198" font-size="12" fill="#5f6368">subtitles</text>
+  </g>
+  <g stroke="#0b6e4f" stroke-width="2.2" fill="none" marker-end="url(#a)">
+    <path d="M174 71 H222"/>
+    <path d="M396 71 H446"/>
+    <path d="M600 71 H630" stroke-dasharray="4 3"/>
+    <path d="M311 102 V146"/>
+    <path d="M396 181 H446"/>
+    <path d="M525 212 V246"/>
+    <path d="M634 181 H604"/>
+  </g>
+  <g font-size="12" fill="#5f6368" text-anchor="middle">
+    <text x="198" y="62">add</text>
+    <text x="421" y="62">search</text>
+    <text x="345" y="128">grab</text>
+    <text x="421" y="172">hardlink</text>
+    <text x="421" y="200">(instant)</text>
+    <text x="24" y="290" text-anchor="start">Same filesystem + same paths in every</text>
+    <text x="24" y="308" text-anchor="start">container = imports are instant hardlinks.</text>
+  </g>
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 250" font-family="DejaVu Sans, Verdana, sans-serif" role="img" aria-labelledby="t d">
+  <title id="t">How DNS flows through AdGuard Home and Unbound</title>
+  <desc id="d">Devices ask AdGuard Home, which blocks ads and trackers and forwards the rest to Unbound. Unbound resolves names itself by asking the root, TLD and authoritative name servers.</desc>
+  <rect width="760" height="250" rx="14" fill="#ffffff"/>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#0b6e4f"/></marker>
+  </defs>
+  <g font-size="15" text-anchor="middle">
+    <rect x="22" y="70" width="140" height="80" rx="10" fill="#f3f1ec" stroke="#cfc9bd"/>
+    <text x="92" y="104" font-weight="bold" fill="#1d1d1f">Devices</text>
+    <text x="92" y="126" font-size="12" fill="#5f6368">phones, TV, PCs</text>
+
+    <rect x="212" y="70" width="160" height="80" rx="10" fill="#e3f2ec" stroke="#0b6e4f"/>
+    <text x="292" y="104" font-weight="bold" fill="#1d1d1f">AdGuard Home</text>
+    <text x="292" y="126" font-size="12" fill="#5f6368">blocks ads &amp; trackers</text>
+
+    <rect x="422" y="70" width="150" height="80" rx="10" fill="#e3f2ec" stroke="#0b6e4f"/>
+    <text x="497" y="104" font-weight="bold" fill="#1d1d1f">Unbound</text>
+    <text x="497" y="126" font-size="12" fill="#5f6368">recursive resolver</text>
+
+    <rect x="616" y="22" width="124" height="52" rx="10" fill="#f3f1ec" stroke="#cfc9bd"/>
+    <text x="678" y="53" font-size="13" fill="#1d1d1f">Root servers</text>
+    <rect x="616" y="84" width="124" height="52" rx="10" fill="#f3f1ec" stroke="#cfc9bd"/>
+    <text x="678" y="115" font-size="13" fill="#1d1d1f">.com / .dev …</text>
+    <rect x="616" y="146" width="124" height="52" rx="10" fill="#f3f1ec" stroke="#cfc9bd"/>
+    <text x="678" y="171" font-size="13" fill="#1d1d1f">example.com's</text>
+    <text x="678" y="188" font-size="13" fill="#1d1d1f">own servers</text>
+  </g>
+  <g stroke="#0b6e4f" stroke-width="2.2" fill="none" marker-end="url(#a)">
+    <path d="M162 110 H208"/>
+    <path d="M372 110 H418"/>
+    <path d="M572 100 C 595 90, 595 55, 612 50"/>
+    <path d="M572 110 H612"/>
+    <path d="M572 120 C 595 130, 595 165, 612 170"/>
+  </g>
+  <g font-size="12" fill="#5f6368" text-anchor="middle">
+    <text x="185" y="98">ask</text>
+    <text x="395" y="98">forward</text>
+    <text x="292" y="180">blocked? → 0.0.0.0</text>
+    <text x="497" y="180">caches answers</text>
+    <text x="380" y="232">No public DNS company sees every lookup: Unbound walks the hierarchy itself.</text>
+  </g>
+</svg>
