@@ -1,14 +1,14 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { avatarOf } from '../lib';
-interface Props { author: CollectionEntry<'authors'> }
-const { author } = Astro.props;
+interface Props { author: CollectionEntry<'authors'>; label?: string }
+const { author, label = 'Written by' } = Astro.props;
 const { name, bio, role, links } = author.data;
 ---
 <aside class="author-box">
   <img src={avatarOf(author)} alt="" width="56" height="56" loading="lazy" />
   <div>
-    <div class="meta">Written by</div>
+    {label && <div class="meta">{label}</div>}
     <a class="author-name" href={`/authors/${author.id}/`}>{name}</a>{role === 'editor' && <span class="pill" style="margin-left:8px">Editor</span>}
     <p>{bio}</p>
     {(links.website || links.github) && (

@@ -13,7 +13,7 @@ const posts = (await getPosts()).filter((p) => p.data.author.id === author.id);
 ---
 <Base title={author.data.name} description={author.data.bio} author={author.id}>
   <h1>{author.data.name}</h1>
-  <AuthorBox author={author} />
+  <AuthorBox author={author} label="" />
   <h2>Posts by {author.data.name}</h2>
   {posts.length > 0
     ? <ul class="cards">{posts.map((post) => <PostCard post={post} />)}</ul>
