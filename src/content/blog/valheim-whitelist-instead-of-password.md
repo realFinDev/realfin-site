@@ -26,6 +26,8 @@ You need each player's **SteamID64**, the long number starting with `7656119…`
 
 ## 2. Write the whitelist
 
+Shortcut: paste your IDs, profile links or server log lines into the [Valheim whitelist builder](/tools/valheim-whitelist/) and copy the finished file.
+
 In the server's config folder (`./config/permittedlist.txt` with the `lloesche/valheim-server` image):
 
 ```

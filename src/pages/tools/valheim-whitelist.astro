@@ -1,0 +1,75 @@
+---
+import Base from '../../layouts/Base.astro';
+const example = `Alice 76561198000000001
+https://steamcommunity.com/profiles/76561198000000002
+Bob - 76561198000000003`;
+---
+<Base title="Valheim whitelist builder" description="Paste Steam profile links, SteamID64s or Valheim server log lines and get a clean, commented permittedlist.txt or adminlist.txt for your dedicated server.">
+  <div class="prose">
+    <h1>Valheim whitelist builder</h1>
+    <p class="lede">Turn a messy list of Steam profile links, IDs or server log lines into a clean <code>permittedlist.txt</code> (whitelist) or <code>adminlist.txt</code>, with names as comments so you remember who's who.</p>
+    <p class="meta">Runs entirely in your browser. Nothing you paste is sent anywhere.</p>
+  </div>
+
+  <form class="tool" id="wl">
+    <fieldset>
+      <legend>Paste anything that contains Steam IDs</legend>
+      <textarea id="input" spellcheck="false" aria-label="Steam IDs, profile links or log lines">{example}</textarea>
+      <label class="row"><span>File</span>
+        <select name="file">
+          <option value="permittedlist.txt">permittedlist.txt (whitelist)</option>
+          <option value="adminlist.txt">adminlist.txt (admins)</option>
+          <option value="bannedlist.txt">bannedlist.txt (bans)</option>
+        </select>
+      </label>
+      <button type="submit" class="action">Build file</button>
+    </fieldset>
+  </form>
+
+  <h2 id="outtitle">permittedlist.txt</h2>
+  <pre class="out"><code id="out"></code></pre>
+  <button type="button" class="copy" id="copy">Copy</button>
+  <p class="meta" id="count"></p>
+
+  <div class="prose">
+    <h2>What it understands</h2>
+    <ul>
+      <li>Plain SteamID64s: the 17-digit numbers starting with <code>7656119</code>.</li>
+      <li>Profile links like <code>steamcommunity.com/profiles/7656119…</code>. Custom vanity links (<code>/id/name</code>) don't contain the ID: open the profile and use a Steam ID lookup site to get the number.</li>
+      <li>Lines from the Valheim server log, e.g. <code>Player history entry with index 0:  Alice (Steam_7656119…)</code>. The server prints these on start-up for everyone who has played on the world.</li>
+      <li>Text on the same line becomes the name comment. Duplicates are removed.</li>
+    </ul>
+    <h2>Using the file</h2>
+    <ul>
+      <li>Put it in the server's config folder (with the <code>lloesche/valheim-server</code> Docker image: <code>./config/</code>) and <strong>restart the server</strong>. The lists are read on start-up.</li>
+      <li>A whitelist with an empty password and <code>SERVER_PUBLIC=false</code> means friends join with no password prompt: <a href="/blog/valheim-whitelist-instead-of-password/">how to set that up</a>.</li>
+      <li>Only put people you'd trust with your world in <code>adminlist.txt</code>.</li>
+    </ul>
+  </div>
+
+  <script is:inline src="/tools/valheim-whitelist.js"></script>
+  <script is:inline>
+    (function () {
+      var form = document.getElementById('wl');
+      var headers = {
+        'permittedlist.txt': 'List permitted players ID ONE per line',
+        'adminlist.txt': 'List admin players ID ONE per line',
+        'bannedlist.txt': 'List banned players ID ONE per line',
+      };
+      function build() {
+        var file = form.elements.namedItem('file').value;
+        var entries = window.ValheimWhitelist.extract(document.getElementById('input').value);
+        document.getElementById('outtitle').textContent = file;
+        document.getElementById('out').textContent = window.ValheimWhitelist.format(entries, headers[file]);
+        document.getElementById('count').textContent = entries.length + (entries.length === 1 ? ' player' : ' players') + (entries.length ? '' : ': no SteamID64s found. They are 17 digits starting with 7656119.');
+      }
+      form.addEventListener('submit', function (e) { e.preventDefault(); build(); });
+      form.addEventListener('change', build);
+      document.getElementById('copy').addEventListener('click', function () {
+        var b = this, t = document.getElementById('out').textContent;
+        navigator.clipboard && navigator.clipboard.writeText(t).then(function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1200); });
+      });
+      build();
+    })();
+  </script>
+</Base>
