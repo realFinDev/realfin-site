@@ -32,7 +32,7 @@ const pretty: Record<string, string> = {
   <form id="vm" class="tool">
     <fieldset>
       <legend>Start from a preset (optional)</legend>
-      <select name="preset">
+      <select name="preset" aria-label="Preset">
         <option value="">None (normal, then my changes below)</option>
         {presets.map((p) => <option value={p}>{p[0].toUpperCase() + p.slice(1)}</option>)}
       </select>

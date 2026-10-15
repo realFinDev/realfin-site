@@ -50,6 +50,6 @@ export default defineConfig({
   markdown: {
     rehypePlugins: [rehypeTableScope],
     // Code highlighting follows the site theme; both themes have readable (WCAG AA) comment colours.
-    shikiConfig: { themes: { light: 'github-light', dark: 'github-dark-default' } },
+    shikiConfig: { themes: { light: 'github-light-default', dark: 'github-dark-default' } },
   },
 });
