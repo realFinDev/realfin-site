@@ -142,3 +142,11 @@ button.copy, button.action { font: inherit; font-size: 0.9rem; background: var(-
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 18px; } .chips .pill { padding: 3px 12px; font-size: 0.85rem; }
 mark { background: var(--accent-soft); color: var(--text); border-radius: 3px; padding: 0 2px; }
+/* Code highlighting: light theme colours by default, dark theme colours when the site is dark. */
+.prose pre.astro-code { border-color: var(--border); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .astro-code,
+  :root:not([data-theme="light"]) .astro-code span { color: var(--shiki-dark) !important; background-color: var(--shiki-dark-bg) !important; }
+}
+:root[data-theme="dark"] .astro-code,
+:root[data-theme="dark"] .astro-code span { color: var(--shiki-dark) !important; background-color: var(--shiki-dark-bg) !important; }

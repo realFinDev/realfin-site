@@ -47,5 +47,9 @@ export default defineConfig({
       serialize: (item) => (lastmod.has(item.url) ? { ...item, lastmod: lastmod.get(item.url) } : item),
     }),
   ],
-  markdown: { rehypePlugins: [rehypeTableScope] },
+  markdown: {
+    rehypePlugins: [rehypeTableScope],
+    // Code highlighting follows the site theme; both themes have readable (WCAG AA) comment colours.
+    shikiConfig: { themes: { light: 'github-light', dark: 'github-dark-default' } },
+  },
 });
