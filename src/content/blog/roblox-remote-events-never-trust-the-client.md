@@ -80,6 +80,8 @@ For every remote handler:
 6. **Clean up per-player tables** on `PlayerRemoving`, or they leak memory.
 7. **RemoteFunctions**: never `InvokeClient` and wait on the server. A client can simply never answer.
 
+Shortcut: the [RemoteEvent validator generator](/tools/roblox-remote-validator/) writes steps 1, 3, 4 and 6 for you from a short description of the arguments.
+
 ## How I use AI for this
 
 - I ask for the feature **and** say "the server must not trust any argument; validate types, ownership, ranges and rate-limit."

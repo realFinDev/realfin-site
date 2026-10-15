@@ -5,4 +5,5 @@ export const TOOLS = [
   { href: '/tools/dns-checker/', title: 'DNS record checker', short: 'Records and TTLs on Cloudflare and Google DNS, side by side.', text: 'Look up records on Cloudflare and Google DNS side by side, with TTLs and how long a "doesn\'t exist" answer stays cached.' },
   { href: '/tools/compose-port-checker/', title: 'Docker Compose port checker', short: 'Find port conflicts and services open to your whole network.', text: 'Paste your compose files and find duplicate host ports, plus services exposed to your whole network that probably shouldn\'t be.' },
   { href: '/tools/docker-log-limits/', title: 'Docker log size limit helper', short: 'Merge log limits into daemon.json, with a disk estimate.', text: 'Paste your daemon.json, choose max-size and max-file, and get the merged config plus the worst-case disk usage.' },
+  { href: '/tools/roblox-remote-validator/', title: 'Roblox RemoteEvent validator generator', short: 'Server-side Luau that rejects anything exploiters send.', text: 'Describe what a RemoteEvent receives and get server-side Luau that type-checks, range-checks and rate-limits every argument.' },
 ];

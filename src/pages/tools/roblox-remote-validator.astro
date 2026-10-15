@@ -1,0 +1,124 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base image="/og/tool-roblox-remote-validator.png" title="Roblox RemoteEvent validator generator" description="Describe what a RemoteEvent receives and get server-side Luau that type-checks, range-checks and rate-limits every argument, so exploiters can't send whatever they want.">
+  <div class="prose" data-pagefind-body>
+    <h1>Roblox RemoteEvent validator generator</h1>
+    <p class="lede">Exploiters can fire any RemoteEvent with <strong>any arguments</strong>. Describe what your remote should receive, and get the server-side Luau that rejects everything else: wrong types, out-of-range numbers, NaN, huge strings, fake objects and spam.</p>
+    <p class="meta">Runs entirely in your browser. The generated pattern is tested against 20+ malicious inputs in the real Luau runtime. Background: <a href="/blog/roblox-remote-events-never-trust-the-client/">never trust the client</a>.</p>
+  </div>
+
+  <form class="tool" id="rv">
+    <fieldset>
+      <legend>Remote</legend>
+      <label class="row"><span>RemoteEvent name (in ReplicatedStorage)</span><input type="text" name="remote" value="BuyItem" spellcheck="false" /></label>
+      <label class="row"><span>Rate limit (seconds between calls, 0 = none)</span><input type="number" name="rate" value="0.5" min="0" step="0.1" /></label>
+    </fieldset>
+    <fieldset>
+      <legend>Arguments the client sends (after <code>player</code>)</legend>
+      <div id="args"></div>
+      <button type="button" class="action" id="add">+ Add argument</button>
+    </fieldset>
+    <button type="submit" class="action">Generate</button>
+  </form>
+
+  <div id="errors" aria-live="polite"></div>
+  <h2>Server Script</h2>
+  <pre class="out"><code id="out"></code></pre>
+  <button type="button" class="copy" id="copy">Copy</button>
+
+  <div class="prose">
+    <h2>What the generated code does</h2>
+    <ul>
+      <li>Treats every client value as <code>unknown</code> and checks its type with <code>typeof()</code> before touching it.</li>
+      <li>Numbers: rejects NaN and infinity (both pass naive <code>&lt;</code>/<code>&gt;</code> checks), enforces min/max and whole numbers if needed.</li>
+      <li>Strings: rejects empty and over-long values. "Choice" only accepts the listed values.</li>
+      <li>Vector3: rejects NaN components and, optionally, positions too far away. Instances: checks the class and that the object is still in the world.</li>
+      <li>Optional per-player rate limit, with cleanup when players leave (no memory leak).</li>
+      <li>Only then calls <code>handle(...)</code> with properly typed values. That's where your logic goes.</li>
+    </ul>
+    <h2>Still your job</h2>
+    <ul>
+      <li><strong>Never accept values the server can work out itself</strong>: prices, damage, rewards. Look them up on the server.</li>
+      <li>Check server state inside <code>handle()</code>: does the player own it, can they afford it, are they close enough?</li>
+      <li>RemoteFunctions need the same checks, and never call <code>InvokeClient</code> from the server and wait on it.</li>
+    </ul>
+  </div>
+
+  <template id="row">
+    <div class="argrow">
+      <input type="text" data-k="name" placeholder="name" aria-label="argument name" spellcheck="false" />
+      <select data-k="type" aria-label="argument type">
+        <option value="string">string</option>
+        <option value="choice">choice (one of a list)</option>
+        <option value="integer">integer</option>
+        <option value="number">number</option>
+        <option value="boolean">boolean</option>
+        <option value="Vector3">Vector3</option>
+        <option value="Instance">Instance</option>
+      </select>
+      <input type="text" data-k="options" placeholder="allowed values, comma-separated" aria-label="allowed values" />
+      <input type="number" data-k="maxLength" placeholder="max length" aria-label="max length" />
+      <input type="number" data-k="min" placeholder="min" aria-label="minimum" />
+      <input type="number" data-k="max" placeholder="max" aria-label="maximum" />
+      <input type="number" data-k="maxMagnitude" placeholder="max distance" aria-label="max magnitude" />
+      <input type="text" data-k="className" placeholder="class, e.g. BasePart" aria-label="class name" />
+      <button type="button" class="code-copy remove" aria-label="remove argument">✕</button>
+    </div>
+  </template>
+
+  <script is:inline src="/tools/roblox-remote.js"></script>
+  <script is:inline>
+    (function () {
+      var form = document.getElementById('rv'), argsEl = document.getElementById('args'), tpl = document.getElementById('row');
+      var SHOW = { string: ['maxLength'], choice: ['options', 'maxLength'], integer: ['min', 'max'], number: ['min', 'max'], boolean: [], Vector3: ['maxMagnitude'], Instance: ['className'] };
+      function sync(row) {
+        var t = row.querySelector('[data-k=type]').value;
+        ['options', 'maxLength', 'min', 'max', 'maxMagnitude', 'className'].forEach(function (k) {
+          row.querySelector('[data-k=' + k + ']').hidden = SHOW[t].indexOf(k) === -1;
+        });
+      }
+      function addRow(v) {
+        var row = tpl.content.firstElementChild.cloneNode(true);
+        Object.keys(v || {}).forEach(function (k) { var i = row.querySelector('[data-k=' + k + ']'); if (i) i.value = v[k]; });
+        row.querySelector('[data-k=type]').addEventListener('change', function () { sync(row); });
+        row.querySelector('.remove').addEventListener('click', function () { row.remove(); gen(); });
+        argsEl.appendChild(row); sync(row);
+      }
+      function gen() {
+        var args = Array.prototype.map.call(argsEl.children, function (row) {
+          var a = {}; row.querySelectorAll('[data-k]').forEach(function (i) { if (!i.hidden) a[i.dataset.k] = i.value; }); return a;
+        });
+        var r = window.RobloxRemote.generate({ remote: form.elements.namedItem('remote').value, rateLimit: form.elements.namedItem('rate').value, args: args });
+        var err = document.getElementById('errors');
+        err.innerHTML = '';
+        if (!r.ok) {
+          var ul = document.createElement('ul');
+          r.errors.forEach(function (e) { var li = document.createElement('li'); li.className = 'warn'; li.textContent = e; ul.appendChild(li); });
+          err.appendChild(ul);
+          return;
+        }
+        document.getElementById('out').textContent = r.code;
+      }
+      document.getElementById('add').addEventListener('click', function () { addRow({ type: 'string', maxLength: 50 }); });
+      form.addEventListener('submit', function (e) { e.preventDefault(); gen(); });
+      form.addEventListener('change', gen);
+      document.getElementById('copy').addEventListener('click', function () {
+        var b = this; navigator.clipboard && navigator.clipboard.writeText(document.getElementById('out').textContent).then(function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1200); });
+      });
+      addRow({ name: 'itemName', type: 'choice', options: 'Sword, Shield', maxLength: 20 });
+      addRow({ name: 'amount', type: 'integer', min: 1, max: 99 });
+      gen();
+    })();
+  </script>
+</Base>
+<style is:global>
+  .argrow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 8px 0; border-bottom: 1px dashed var(--border); }
+  .tool .argrow input, .tool .argrow select { font: inherit; font-size: 0.9rem; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 4px 7px; min-width: 0; }
+  .argrow input[data-k=name] { width: 9em; }
+  .argrow input[type=number] { width: 7em; }
+  .argrow input[data-k=options] { flex: 1 1 14em; }
+  .argrow .remove { position: static; }
+  .tool input[type=text], .tool input[type=number] { font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; }
+  #rv > .action { margin-bottom: 8px; }
+</style>
