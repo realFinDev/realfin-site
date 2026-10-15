@@ -5,7 +5,7 @@ export const AUTHOR = 'RealFin';
 
 // Fill in after Google AdSense approves the site, e.g. 'ca-pub-1234567890123456'.
 // While empty, no ad script is loaded at all.
-export const ADSENSE_CLIENT = '';
+export const ADSENSE_CLIENT = 'ca-pub-4674228053773116';
 
 export const CATEGORIES = {
   homelab: { label: 'Homelab', blurb: 'Docker, networking, backups and the things that broke along the way.' },
