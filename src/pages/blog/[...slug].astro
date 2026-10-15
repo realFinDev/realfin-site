@@ -20,7 +20,25 @@ const author = await authorOf(post);
 const ads = post.data.ads;
 const image = fs.existsSync(`public/og/${post.id}.png`) ? `/og/${post.id}.png` : '/og/default.png';
 const cat = CATEGORIES[post.data.category];
-const related = posts.filter((p) => p.data.category === post.data.category && p.id !== post.id).slice(0, 3);
+// Related: most shared tags first, then same category, newest first.
+const tagSet = new Set(post.data.tags);
+const related = posts
+  .filter((p) => p.id !== post.id)
+  .map((p) => ({ p, score: p.data.tags.filter((t) => tagSet.has(t)).length * 2 + (p.data.category === post.data.category ? 1 : 0) }))
+  .filter((x) => x.score > 0)
+  .sort((a, b) => b.score - a.score || b.p.data.pubDate.valueOf() - a.p.data.pubDate.valueOf())
+  .slice(0, 3)
+  .map((x) => x.p);
+const editUrl = `https://github.com/realFinDev/realfin-site/edit/main/src/content/blog/${post.id}.md`;
+const breadcrumbs = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Blog', item: new URL('/blog/', Astro.site).href },
+    { '@type': 'ListItem', position: 2, name: cat.label, item: new URL(`/category/${post.data.category}/`, Astro.site).href },
+    { '@type': 'ListItem', position: 3, name: post.data.title },
+  ],
+};
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -34,6 +52,7 @@ const jsonLd = {
 ---
 <Base title={post.data.title} description={post.data.description} type="article" ads={ads} author={author.id} image={image}>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbs)} />
   <article data-pagefind-body>
     <a class="pill" href={`/category/${post.data.category}/`} data-pagefind-ignore>{cat.label}</a>
     <h1 style="margin-top:10px">{post.data.title}</h1>
@@ -48,10 +67,11 @@ const jsonLd = {
     <div class="prose"><Content /></div>
     <AdSlot ads={ads} />
     <AuthorBox author={author} />
+    <p class="meta" data-pagefind-ignore>Found a mistake or something out of date? <a href={editUrl} rel="nofollow">Suggest an edit on GitHub</a> or <a href="/contact/">tell me</a>.</p>
   </article>
   {related.length > 0 && (
     <section>
-      <h2>More in {cat.label}</h2>
+      <h2>Related posts</h2>
       <ul class="cards">{related.map((p) => <PostCard post={p} />)}</ul>
     </section>
   )}
