@@ -53,5 +53,8 @@ jobs:
 
       - run: npm ci
 
+      - name: Tool tests
+        run: npm test
+
       - name: Build the site (catches broken front matter, unknown authors, bad dates)
         run: npm run build

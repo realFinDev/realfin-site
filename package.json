@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "astro dev --host",
     "build": "astro build && pagefind --site dist",
-    "preview": "astro preview --host"
+    "preview": "astro preview --host",
+    "test": "node --test tests/*.test.cjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
