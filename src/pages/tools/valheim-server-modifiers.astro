@@ -62,6 +62,8 @@ const pretty: Record<string, string> = {
   <pre class="out"><code id="args">(defaults: nothing to add)</code></pre>
   <button type="button" class="copy" data-target="args">Copy</button>
 
+  <p><button type="button" class="copy" id="share">Copy link to these settings</button></p>
+
   <h2>Docker (lloesche/valheim-server)</h2>
   <pre class="out"><code id="env"></code></pre>
   <button type="button" class="copy" data-target="env">Copy</button>
@@ -92,11 +94,29 @@ const pretty: Record<string, string> = {
         form.querySelectorAll('input[name=setkey]:checked').forEach(function (c) { parts.push('-setkey ' + c.value); });
         var args = parts.join(' ');
         document.getElementById('args').textContent = args || '(defaults: nothing to add)';
+        // Keep the choices in the URL so the page can be shared with exactly these settings.
+        var q = new URLSearchParams();
+        ['preset', 'combat', 'deathpenalty', 'resources', 'raids', 'portals'].forEach(function (k) { var v = el.namedItem(k).value; if (v) q.set(k, v); });
+        form.querySelectorAll('input[name=setkey]:checked').forEach(function (c) { q.append('setkey', c.value); });
+        var qs = q.toString();
+        history.replaceState(null, '', qs ? '?' + qs : location.pathname);
         document.getElementById('env').textContent = args ? '- SERVER_ARGS=' + args : '# defaults: no SERVER_ARGS needed';
       }
+      // Restore choices from a shared link (only accept values that exist in the form).
+      var init = new URLSearchParams(location.search);
+      ['preset', 'combat', 'deathpenalty', 'resources', 'raids', 'portals'].forEach(function (k) {
+        var v = init.get(k), sel = el.namedItem(k);
+        if (v && Array.prototype.some.call(sel.options, function (o) { return o.value === v; })) sel.value = v;
+      });
+      init.getAll('setkey').forEach(function (v) {
+        form.querySelectorAll('input[name=setkey]').forEach(function (c) { if (c.value === v) c.checked = true; });
+      });
       form.addEventListener('change', update);
       form.addEventListener('submit', function (e) { e.preventDefault(); update(); });
-      document.querySelectorAll('.copy').forEach(function (b) {
+      document.getElementById('share').addEventListener('click', function () {
+        var b = this; navigator.clipboard && navigator.clipboard.writeText(location.href).then(function () { b.textContent = 'Link copied'; setTimeout(function () { b.textContent = 'Copy link to these settings'; }, 1500); });
+      });
+      document.querySelectorAll('.copy[data-target]').forEach(function (b) {
         b.addEventListener('click', function () {
           var t = document.getElementById(b.dataset.target).textContent;
           navigator.clipboard && navigator.clipboard.writeText(t).then(function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1200); });

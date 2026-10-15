@@ -77,7 +77,7 @@ The in-game "World Modifiers" (combat, death penalty, resources, raids, portals)
 
 The server log confirms them on start: `Setting world modifier: raids->none`.
 
-To get the exact line without looking up the option names, use the [Valheim world modifier generator](/tools/valheim-server-modifiers/).
+To get the exact line without looking up the option names, use the [Valheim world modifier generator](/tools/valheim-server-modifiers/). Here are [the settings our group plays with](/tools/valheim-server-modifiers/?deathpenalty=veryeasy&resources=most&raids=none): forgiving deaths, triple resources, no raids.
 
 ## Next steps
 
