@@ -1,0 +1,13 @@
+# Short links. go.realfin.dev/<name> is forwarded by one Cloudflare redirect rule to realfin.dev/go/<name>.
+# Add a line here to create a new short link (302 = temporary, so targets can change).
+/go/valheim          /tools/valheim-server-modifiers/          302
+/go/whitelist        /tools/valheim-whitelist/                 302
+/go/dns              /tools/dns-checker/                       302
+/go/ports            /tools/compose-port-checker/              302
+/go/tools            /tools/                                   302
+/go/valheim-guide    /blog/valheim-dedicated-server-docker/    302
+/go/homelab          /homelab/                                 302
+/go/search           /search/                                  302
+/go/rss              /rss.xml                                  302
+/go                  /                                         302
+/go/*                /                                         302
