@@ -12,6 +12,14 @@ const usedCategories = new Set(
     .map((src) => src.match(/^category:\s*(\S+)/m)?.[1])
     .filter(Boolean),
 );
+// Post URL → last-modified date (updatedDate, else pubDate) for the sitemap's <lastmod>.
+const lastmod = new Map(
+  fs.readdirSync(BLOG).filter((f) => f.endsWith('.md')).flatMap((f) => {
+    const src = fs.readFileSync(`${BLOG}/${f}`, 'utf8');
+    const d = src.match(/^updatedDate:\s*(\S+)/m)?.[1] ?? src.match(/^pubDate:\s*(\S+)/m)?.[1];
+    return d ? [[`https://realfin.dev/blog/${f.replace(/\.md$/, '')}/`, new Date(d).toISOString()]] : [];
+  }),
+);
 const isEmptyCategory = (/** @type {string} */ page) => {
   const m = page.match(/\/category\/([^/]+)\/$/);
   return Boolean(m && !usedCategories.has(m[1]));
@@ -31,6 +39,11 @@ function rehypeTableScope() {
 
 export default defineConfig({
   site: 'https://realfin.dev',
-  integrations: [sitemap({ filter: (page) => !page.includes('/admin/') && !isEmptyCategory(page) })],
+  integrations: [
+    sitemap({
+      filter: (page) => !page.includes('/admin/') && !isEmptyCategory(page),
+      serialize: (item) => (lastmod.has(item.url) ? { ...item, lastmod: lastmod.get(item.url) } : item),
+    }),
+  ],
   markdown: { rehypePlugins: [rehypeTableScope] },
 });
