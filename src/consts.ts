@@ -46,6 +46,7 @@ export const SERIES: Record<string, { title: string; posts: string[] }> = {
       'valheim-crops-not-growing-empty-server',
       'valheim-chests-destroyed-find-when-in-backups',
       'valheim-craft-from-containers-duplication-bug',
+      'valheim-friends-cant-connect-port-blocked',
     ],
   },
   'homelab-dns': {
